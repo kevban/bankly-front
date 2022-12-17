@@ -1,22 +1,21 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { getTransaction } from './actions/actionCreators'
+import { useDispatch, useSelector } from 'react-redux';
+import PlaidView from './components/PlaidView';
 
 function App() {
+  const dispatch = useDispatch()
+  const userId = useSelector(store => store.plaid.userId)
+  const fetchTransaction = () => {
+    console.log(userId)
+    dispatch(getTransaction(userId));
+  }
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <PlaidView></PlaidView>
+        <button onClick={fetchTransaction}>Get transactions</button>
       </header>
     </div>
   );
