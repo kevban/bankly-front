@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001/api";
 
-class PiggyApi {
+class BanklyApi {
     static token;
 
     /**
@@ -16,7 +16,7 @@ class PiggyApi {
         console.debug("API Call:", endpoint, data, method);
 
         const url = `${BASE_URL}/${endpoint}`;
-        const headers = { token: PiggyApi.token };
+        const headers = { token: BanklyApi.token };
         const params = (method === "get")
             ? data
             : {};
@@ -47,8 +47,8 @@ class PiggyApi {
         return res
     }
 
-    static async login() {
-        let res = await this.request(`auth/login`, {username: "papaya", password: "password"}, 'post')
+    static async login(data) {
+        let res = await this.request(`auth/login`, data, 'post')
         this.token = res.token
         return res
     }
@@ -58,9 +58,10 @@ class PiggyApi {
         this.token = res.token
         return res
     }
+
 }
 
 // username papaya4, password password
-PiggyApi.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhcGF5YTQiLCJ1c2VySWQiOiI2MzliYjBkMDhkNTgzYmY1NDFkNDI4ZDkiLCJpYXQiOjE2NzExNDk4ODl9.bN09KBRPV-VxZPlmm0fuzzFAzId8MhSuUvwgO4NSTU4'
+BanklyApi.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhcGF5YTQiLCJ1c2VySWQiOiI2MzliYjBkMDhkNTgzYmY1NDFkNDI4ZDkiLCJpYXQiOjE2NzExNDk4ODl9.bN09KBRPV-VxZPlmm0fuzzFAzId8MhSuUvwgO4NSTU4'
 
-export default PiggyApi
+export default BanklyApi

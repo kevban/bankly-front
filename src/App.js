@@ -3,6 +3,10 @@ import './App.css';
 import { getTransaction } from './actions/actionCreators'
 import { useDispatch, useSelector } from 'react-redux';
 import PlaidView from './components/PlaidView';
+import { Routes, Route } from 'react-router-dom'
+import SignUp from './components/Signup';
+import SignIn from './components/Login';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const dispatch = useDispatch()
@@ -13,10 +17,12 @@ function App() {
   }
   return (
     <div className="App">
-      <header className="App-header">
-        <PlaidView></PlaidView>
-        <button onClick={fetchTransaction}>Get transactions</button>
-      </header>
+      <Routes>
+        <Route exact path='/signup' element={<SignUp></SignUp>}></Route>
+        <Route exact path='/login' element={<SignIn></SignIn>}></Route>
+        <Route exact path='/' element={<Dashboard></Dashboard>}></Route>
+        <Route path = '*' element={<h1>404 Not Found</h1>}></Route>
+      </Routes>
     </div>
   );
 }
