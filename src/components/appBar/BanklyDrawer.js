@@ -46,6 +46,7 @@ const BanklyDrawer = ({open, toggleDrawer, drawerWidth, mainListItems, secondary
       },
     }),
   );
+
   return <Drawer variant="permanent" open={open}>
     <Toolbar
       sx={{

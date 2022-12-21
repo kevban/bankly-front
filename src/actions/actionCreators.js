@@ -48,29 +48,21 @@ function exchangePublicTokenToAccess(publicToken) {
 
 function login(loginData) {
     return async function (dispatch) {
-        try {
-            const data = await BanklyApi.login(loginData)
-            dispatch({
-                type: 'LOGIN',
-                data
-            })
-        } catch (e) {
-            console.log(e)
-        }
+        const data = await BanklyApi.login(loginData)
+        dispatch({
+            type: 'LOGIN',
+            data
+        })
     }
 }
 
 function register(signupData) {
     return async function (dispatch) {
-        try {
-            const data = await BanklyApi.register(signupData)
-            dispatch({
-                type: 'REGISTER',
-                data
-            })
-        } catch (e) {
-            console.log(e)
-        }
+        const data = await BanklyApi.register(signupData)
+        dispatch({
+            type: 'REGISTER',
+            data
+        })
     }
 }
 

@@ -11,12 +11,6 @@ function plaidReducer(state=INITIAL_STATE, action) {
         case "GET_TRANSACTION":
             console.log("transactions:", action.data)
             return {...state, transactions: action.data}
-        case "LOGIN":
-            console.log("login:", action.data)
-            return {...state, user: action.data}
-        case "REGISTER":
-            console.log("signup:", action.data)
-            return {...state, user: action.data}
         default:
             return state
     }

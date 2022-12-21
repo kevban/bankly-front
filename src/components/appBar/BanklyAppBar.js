@@ -29,6 +29,7 @@ import { mainListItems, secondaryListItems } from './ListItem';
 
 const BanklyAppBar = () => {
   const user = useSelector(store => store.auth.user)
+  // const user = true
   const drawerWidth = 240;
   const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -46,6 +47,15 @@ const BanklyAppBar = () => {
         duration: theme.transitions.duration.enteringScreen,
       }),
     }),
+  }));
+
+  const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
   }));
 
   const [appBarTitle, setAppBarTtitle] = React.useState('Bank.ly')

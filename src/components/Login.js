@@ -12,23 +12,32 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import Copyright from './Copyright';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { login } from '../actions/actionCreators'
+import { Paper } from '@mui/material';
+import useAlert from '../hooks/useAlert'; 
 
 const theme = createTheme();
 
 function SignIn() {
     const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const [alert, createAlert] = useAlert()
+    const handleSubmit = async (data) => {
+        try {
+            await dispatch(login(data))
+            console.log({
+                username: data.username,
+                password: data.password,
+            });
+            navigate('/')
+        } catch (e) {
+            createAlert(e, 'error')
+        }
 
-    const handleSubmit = (data) => {
-        dispatch(login(data))
-        console.log({
-            username: data.username,
-            password: data.password,
-        });
     };
 
     const formik = useFormik({
@@ -41,16 +50,18 @@ function SignIn() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container component={Paper} maxWidth="xs">
                 <CssBaseline />
                 <Box
                     sx={{
                         marginTop: 8,
+                        marginBottom: 8,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}
                 >
+                    {alert}
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>

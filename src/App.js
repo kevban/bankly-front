@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import BanklyAppBar from './components/appBar/BanklyAppBar';
 import { Toolbar, Container, CssBaseline, Stack } from '@mui/material';
 import Landing from './components/LandingPage/Landing';
+import Redirect from './Redirect';
 
 
 function App() {
@@ -25,21 +26,34 @@ function App() {
   return (
     <div className="App">
       <ThemeProvider theme={mdTheme}>
-        <Stack>
-          <CssBaseline />
-          <BanklyAppBar></BanklyAppBar>
-          <Toolbar />
-          <Routes>
-            <Route exact path='/signup' element={<SignUp></SignUp>}></Route>
-            <Route exact path='/login' element={<SignIn></SignIn>}></Route>
-            <Route exact path='/dashboard' element={<Dashboard></Dashboard>}></Route>
-            <Route exact path='/' element={<Landing></Landing>}></Route>
-            <Route path='*' element={<h1>404 Not Found</h1>}></Route>
-          </Routes>
-          <Copyright sx={{ mt: 5, mb: 5 }} />
-        </Stack>
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+            display: "flex"
+          }}
+        >
+          <BanklyAppBar>
+          </BanklyAppBar>
+          <Stack sx={{width: '80%', m: 'auto'}}>
+            <Routes>
+              <Route exact path='/signup' element={<SignUp></SignUp>}></Route>
+              <Route exact path='/login' element={<SignIn></SignIn>}></Route>
+              <Route exact path='/dashboard' element={<Dashboard></Dashboard>}></Route>
+              <Route exact path='/landing' element={<Landing></Landing>}></Route>
+              <Route exact path='/' element={<Redirect></Redirect>}></Route>
+              <Route path='*' element={<h1>404 Not Found</h1>}></Route>
+            </Routes>
+            <Copyright sx={{ mt: 5, mb: 5 }} />
+          </Stack>
+        </Box>
       </ThemeProvider>
-
     </div>
   );
 }
