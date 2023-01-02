@@ -20,7 +20,6 @@ import { login } from '../actions/actionCreators'
 import { Paper } from '@mui/material';
 import useAlert from '../hooks/useAlert'; 
 
-const theme = createTheme();
 
 function SignIn() {
     const dispatch = useDispatch()
@@ -49,8 +48,7 @@ function SignIn() {
     })
 
     return (
-        <ThemeProvider theme={theme}>
-            <Container component={Paper} maxWidth="xs">
+            <Container component={Paper} maxWidth="xs" sx={{my: 'auto'}}>
                 <CssBaseline />
                 <Box
                     sx={{
@@ -120,7 +118,6 @@ function SignIn() {
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider>
     );
 }
 

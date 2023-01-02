@@ -8,7 +8,7 @@ function getTokenAction() {
         try {
             const data = await BanklyApi.createLinkToken()
             dispatch({
-                type: 'SET_TOKEN',
+                type: 'SET_PUBLIC_TOKEN',
                 data
             })
         } catch (e) {
@@ -17,6 +17,7 @@ function getTokenAction() {
     }
 }
 
+// get transaction from Plaid
 function getTransaction() {
     return async function (dispatch) {
         try {
@@ -26,18 +27,23 @@ function getTransaction() {
                 data
             })
         } catch (e) {
-            console.log(e)
+            dispatch({
+                type: 'GET_TRANSACTION',
+                data: 'error'
+            })
         }
+        
     }
 }
 
-
+// this is when the user successfully connect to a bank
 function exchangePublicTokenToAccess(publicToken) {
     return async function (dispatch) {
         try {
-            const data = await BanklyApi.setAccessToken(publicToken)
+            await BanklyApi.setAccessToken(publicToken)
+            const data = await BanklyApi.getInstitutions()
             dispatch({
-                type: 'SET_ACCESS_TOKEN',
+                type: 'SET_CONNECTED_BANKS',
                 data
             })
         } catch (e) {

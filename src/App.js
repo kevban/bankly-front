@@ -5,14 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom'
 import SignUp from './components/Signup';
 import SignIn from './components/Login';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/dashboard/Dashboard';
 import Copyright from './components/Copyright';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import BanklyAppBar from './components/appBar/BanklyAppBar';
 import { Toolbar, Container, CssBaseline, Stack } from '@mui/material';
-import Landing from './components/LandingPage/Landing';
+import Landing from './components/landingPage/Landing';
 import Redirect from './Redirect';
+import PlaidPage from './components/plaidLink/PlaidPage';
 
 
 function App() {
@@ -41,12 +42,14 @@ function App() {
         >
           <BanklyAppBar>
           </BanklyAppBar>
-          <Stack sx={{width: '80%', m: 'auto'}}>
+          <Stack sx={{ width: '80%', mx: 'auto' }}>
+            <Toolbar />
             <Routes>
               <Route exact path='/signup' element={<SignUp></SignUp>}></Route>
               <Route exact path='/login' element={<SignIn></SignIn>}></Route>
               <Route exact path='/dashboard' element={<Dashboard></Dashboard>}></Route>
               <Route exact path='/landing' element={<Landing></Landing>}></Route>
+              <Route exact path='/connect' element={<PlaidPage></PlaidPage>}></Route>
               <Route exact path='/' element={<Redirect></Redirect>}></Route>
               <Route path='*' element={<h1>404 Not Found</h1>}></Route>
             </Routes>

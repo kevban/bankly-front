@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getTokenAction } from "../actions/actionCreators";
+import { getTokenAction } from "../../actions/actionCreators";
 import PlaidLink from "./PlaidLink";
+import PlaidPage from "./PlaidPage";
 
 const PlaidView = () => {
     const dispatch = useDispatch()
@@ -13,7 +14,7 @@ const PlaidView = () => {
     useEffect(() => {
         generateToken();
     }, [dispatch, generateToken])
-    return <PlaidLink></PlaidLink>
+    return <PlaidPage></PlaidPage>
 }
 
 export default PlaidView

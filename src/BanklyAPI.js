@@ -43,7 +43,7 @@ class BanklyApi {
     }
 
     static async getTransactions() {
-        let res = await this.request(`plaid/transactions`, {}, 'get')
+        let res = await this.request(`plaid/transactions`)
         return res
     }
 
@@ -59,9 +59,15 @@ class BanklyApi {
         return res
     }
 
+    // get the connected institution for the current user
+    static async getInstitutions() {
+        let res = await this.request(`user/institutions`)
+        return res
+    }
+
 }
 
 // username papaya4, password password
-BanklyApi.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhcGF5YTQiLCJ1c2VySWQiOiI2MzliYjBkMDhkNTgzYmY1NDFkNDI4ZDkiLCJpYXQiOjE2NzExNDk4ODl9.bN09KBRPV-VxZPlmm0fuzzFAzId8MhSuUvwgO4NSTU4'
+BanklyApi.token = ''
 
 export default BanklyApi

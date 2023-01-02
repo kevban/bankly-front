@@ -35,7 +35,7 @@ function SignUp() {
         password: data.password,
         username: data.username
       });
-      navigate('/')
+      navigate('/connect')
     } catch (e) {
       createAlert(e, 'error')
     }
@@ -54,7 +54,7 @@ function SignUp() {
   })
 
   return (
-    <Container component={Paper} maxWidth="xs">
+    <Container component={Paper} maxWidth="xs" sx={{my: 'auto'}}>
       <CssBaseline />
       <Box
         sx={{
