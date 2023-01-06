@@ -17,14 +17,15 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { MainListItems, SecondaryListItems } from './ListItem'
 
 // import Chart from './Chart';
 
-const BanklyDrawer = ({open, toggleDrawer, drawerWidth, mainListItems, secondaryListItems}) => {
+const BanklyDrawer = ({ open, toggleDrawer, drawerWidth }) => {
   const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
       '& .MuiDrawer-paper': {
-        position: 'relative',
+        position: 'absolute',
         whiteSpace: 'nowrap',
         width: drawerWidth,
         transition: theme.transitions.create('width', {
@@ -62,9 +63,9 @@ const BanklyDrawer = ({open, toggleDrawer, drawerWidth, mainListItems, secondary
     </Toolbar>
     <Divider />
     <List component="nav">
-      {mainListItems}
+      <MainListItems />
       <Divider sx={{ my: 1 }} />
-      {secondaryListItems}
+      <SecondaryListItems />
     </List>
   </Drawer>
 }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -21,15 +21,18 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import useToggle from '../../hooks/useToggle';
 import BanklyDrawer from './BanklyDrawer';
 import { useSelector } from 'react-redux';
-import { mainListItems, secondaryListItems } from './ListItem';
+import AddTransactionButton from '../addTransactionPage/AddTransactionButton';
+import { useLocation } from 'react-router-dom';
+import AddTransactionDrawer from '../addTransactionPage/AddTransactionDrawer';
 
 
 
 
 
 const BanklyAppBar = () => {
-  const user = useSelector(store => store.auth.user)
-  // const user = true
+  const user = useSelector(store => store.auth.user ? store.auth.user.token : null)
+  const location = useLocation()
+  const pathname = location.pathname
   const drawerWidth = 240;
   const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -39,7 +42,7 @@ const BanklyAppBar = () => {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    ...(open && {
+    ...((open && user) && {
       marginLeft: drawerWidth,
       width: `calc(100% - ${drawerWidth}px)`,
       transition: theme.transitions.create(['width', 'margin'], {
@@ -60,6 +63,16 @@ const BanklyAppBar = () => {
 
   const [appBarTitle, setAppBarTtitle] = React.useState('Bank.ly')
   const [open, toggleDrawer] = useToggle(false);
+  const [transactionFab, setTransactionFab] = useState(false);
+  useEffect(() => {
+    const routesToShowFab = ['/dashboard', '/transactions']
+    if (routesToShowFab.includes(pathname)) {
+      setTransactionFab(true)
+    } else {
+      setTransactionFab(false)
+    }
+    console.log('ran', transactionFab)
+  }, [pathname])
   return <>
     <AppBar position="absolute" open={open}>
       <Toolbar
@@ -95,13 +108,14 @@ const BanklyAppBar = () => {
         </IconButton>
       </Toolbar>
     </AppBar>
-    {user ? <BanklyDrawer
-      open={open}
-      toggleDrawer={toggleDrawer}
-      drawerWidth={drawerWidth}
-      mainListItems={mainListItems}
-      secondaryListItems={secondaryListItems}
-    ></BanklyDrawer> : null}
+    {user ? <>
+      <BanklyDrawer
+        open={open}
+        toggleDrawer={toggleDrawer}
+        drawerWidth={drawerWidth}
+      ></BanklyDrawer>
+    </> : null}
+    {transactionFab ? <AddTransactionDrawer></AddTransactionDrawer> : null}
   </>
 }
 

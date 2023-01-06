@@ -1,6 +1,6 @@
 
 import './App.css';
-import { getTransaction } from './actions/actionCreators'
+import { getTransaction, storeUser } from './actions/actionCreators'
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom'
 import SignUp from './components/Signup';
@@ -14,16 +14,21 @@ import { Toolbar, Container, CssBaseline, Stack } from '@mui/material';
 import Landing from './components/landingPage/Landing';
 import Redirect from './Redirect';
 import PlaidPage from './components/plaidLink/PlaidPage';
+import useLocalStorage from './hooks/useLocalStorage';
+import { useEffect } from 'react';
+import BanklyApi from './BanklyAPI';
+import TransactionsList from './components/dashboard/TransactionsList';
+import TransactionPage from './components/transactionPage/TransactionPage';
 
 
 function App() {
-  const dispatch = useDispatch()
-  const userId = useSelector(store => store.plaid.userId)
-  const fetchTransaction = () => {
-    console.log(userId)
-    dispatch(getTransaction(userId));
-  }
   const mdTheme = createTheme();
+  const [token, setToken] = useLocalStorage('token');
+  const dispatch = useDispatch()
+  useEffect(() => {
+    BanklyApi.token = token;
+    dispatch(storeUser(token))
+  }, [token, dispatch])
   return (
     <div className="App">
       <ThemeProvider theme={mdTheme}>
@@ -45,9 +50,10 @@ function App() {
           <Stack sx={{ width: '80%', mx: 'auto' }}>
             <Toolbar />
             <Routes>
-              <Route exact path='/signup' element={<SignUp></SignUp>}></Route>
-              <Route exact path='/login' element={<SignIn></SignIn>}></Route>
+              <Route exact path='/signup' element={<SignUp setToken={setToken}></SignUp>}></Route>
+              <Route exact path='/login' element={<SignIn setToken={setToken}></SignIn>}></Route>
               <Route exact path='/dashboard' element={<Dashboard></Dashboard>}></Route>
+              <Route exact path='/transactions' element={<TransactionPage></TransactionPage>}></Route>
               <Route exact path='/landing' element={<Landing></Landing>}></Route>
               <Route exact path='/connect' element={<PlaidPage></PlaidPage>}></Route>
               <Route exact path='/' element={<Redirect></Redirect>}></Route>

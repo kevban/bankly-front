@@ -4,33 +4,26 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 // import Chart from './Chart';
 import Deposits from '../Deposits';
-import Orders from '../Orders';
+import Orders from './TransactionsList';
 import Copyright from '../Copyright';
 import BanklyAppBar from '../appBar/BanklyAppBar';
 import { useDispatch, useSelector } from 'react-redux'
 import { getTransaction } from '../../actions/actionCreators'
 import DashboardContent from './DashboardContent';
 import moment from 'moment'
+import LoadingPage from '../LoadingPage';
 
 
 
 function Dashboard() {
-    const navigate = useNavigate()
     const user = useSelector(store => {
         return store.auth.user
     })
-    const transactions = useSelector(store => {
-        return store.plaid.transactions
-    })
-    const dispatch = useDispatch()
-    useEffect(() => {
-        if (!user) {
-            navigate('/')
-        }
-        dispatch(getTransaction())
-    }, [dispatch])
+    if (!user) {
+        return <LoadingPage></LoadingPage>
+    }
     return <div>
-        <h1>Welcome back, {user? user.user.first_name: null}</h1>
+        <h1>Welcome back, {user ? user.user.first_name : null}</h1>
         <h3>{moment().format('YYYY-MM-DD')}</h3>
         <DashboardContent></DashboardContent>
     </div>

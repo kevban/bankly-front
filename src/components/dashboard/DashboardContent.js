@@ -3,7 +3,8 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 // import Chart from './Chart';
 import Deposits from '../Deposits';
-import Orders from '../Orders';
+import Orders from './TransactionsList';
+import TransactionsList from './TransactionsList';
 
 
 
@@ -40,7 +41,7 @@ function DashboardContent() {
             {/* Recent Orders */}
             <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                    <Orders />
+                    <TransactionsList maxPageLength={6} />
                 </Paper>
             </Grid>
         </Grid>

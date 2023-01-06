@@ -1,17 +1,21 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { usePlaidLink } from 'react-plaid-link'
-import { exchangePublicTokenToAccess } from "../../actions/actionCreators";
 import { Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import BanklyApi from "../../BanklyAPI";
+import { storeUser, updateTransactions } from "../../actions/actionCreators";
 
 
 const PlaidLink = () => {
     const linkToken = useSelector(store => store.plaid.linkToken);
     const dispatch = useDispatch();
     const onSuccess = useCallback(
-        (publicToken) => {
-            dispatch(exchangePublicTokenToAccess(publicToken))
+        async (publicToken) => {
+            console.log('success')
+            await BanklyApi.setAccessToken(publicToken)
+            await dispatch(storeUser())
+            await dispatch(updateTransactions())
         }
     )
     const { open, ready } = usePlaidLink({

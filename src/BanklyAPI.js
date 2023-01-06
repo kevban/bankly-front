@@ -39,12 +39,21 @@ class BanklyApi {
 
     static async setAccessToken(publicToken) {
         let res = await this.request(`plaid/set-access-token`, {public_token: publicToken}, 'post')
+        console.log('setting access token', res)
         return res
     }
 
+    // this gets user transaction from database.
     static async getTransactions() {
         let res = await this.request(`plaid/transactions`)
-        return res
+        let userTransactions = await this.request(`user/transactions`)
+        return userTransactions
+    }
+
+    // this retrieves transaction from connected banks using plaid service
+    static async updateTransactions() {
+        let userTransactions = await this.request(`plaid/transactions`)
+        return userTransactions
     }
 
     static async login(data) {
@@ -64,6 +73,23 @@ class BanklyApi {
         let res = await this.request(`user/institutions`)
         return res
     }
+
+    // get user information when the app first loads
+    static async getUser() {
+        let res = await this.request('user')
+        return res
+    }
+
+    static async addCategory(data) {
+        let res = await this.request('user/categories', data, 'post')
+        return res
+    }
+    
+    static async logOut() {
+        localStorage.clear();
+        BanklyApi.token = '';
+    }
+
 
 }
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,33 +14,42 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
-import { register } from '../actions/actionCreators';
-import { useDispatch } from 'react-redux';
+import { register, removeUser, storeUser } from '../actions/actionCreators';
+import { useDispatch, useSelector } from 'react-redux';
 import Copyright from './Copyright';
 import { Paper } from '@mui/material';
 import useAlert from '../hooks/useAlert';
+import BanklyApi from '../BanklyAPI';
+import LoadingPage from './LoadingPage';
 
 
-function SignUp() {
+function SignUp({setToken}) {
+  const user = useSelector(store => store.auth.user)
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const [alert, createAlert] = useAlert()
-  const handleSubmit = (data) => {
+  const handleSubmit = async (data) => {
     try {
-      dispatch(register(data))
-      console.log({
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.firstName,
-        password: data.password,
-        username: data.username
-      });
+      let res = await BanklyApi.register(data)
+      console.log('register res:', res.token)
+      await dispatch(removeUser())
+      setToken(res.token)
+      await dispatch(storeUser(res.token))
       navigate('/connect')
     } catch (e) {
       createAlert(e, 'error')
     }
-
   };
+
+  useEffect(() => {
+    if (user) {
+      if (user.token) {
+        navigate('/')
+      }
+    }
+  }, [user])
+
+  
 
   const formik = useFormik({
     initialValues: {
@@ -53,8 +62,13 @@ function SignUp() {
     onSubmit: handleSubmit
   })
 
+
+  if (!user) {
+    return <LoadingPage></LoadingPage>
+  }
+
   return (
-    <Container component={Paper} maxWidth="xs" sx={{my: 'auto'}}>
+    <Container component={Paper} maxWidth="xs" sx={{ my: 'auto' }}>
       <CssBaseline />
       <Box
         sx={{

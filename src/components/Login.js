@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,24 +15,25 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import Copyright from './Copyright';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
-import { login } from '../actions/actionCreators'
+import { useDispatch, useSelector } from 'react-redux';
+import { removeUser, storeUser } from '../actions/actionCreators'
 import { Paper } from '@mui/material';
 import useAlert from '../hooks/useAlert'; 
+import BanklyApi from '../BanklyAPI';
+import LoadingPage from './LoadingPage';
 
 
-function SignIn() {
+function SignIn({setToken}) {
     const dispatch = useDispatch()
+    const user = useSelector(store => store.auth.user)
     const navigate = useNavigate();
     const [alert, createAlert] = useAlert()
     const handleSubmit = async (data) => {
         try {
-            await dispatch(login(data))
-            console.log({
-                username: data.username,
-                password: data.password,
-            });
-            navigate('/')
+            let res = await BanklyApi.login(data)
+            dispatch(removeUser())
+            setToken(res.token)
+            dispatch(storeUser(res.token))
         } catch (e) {
             createAlert(e, 'error')
         }
@@ -46,6 +47,18 @@ function SignIn() {
         },
         onSubmit: handleSubmit
     })
+
+    useEffect(() => {
+        if (user) {
+            if (user.token) {
+                navigate('/')
+            }
+        }
+    }, [user])
+
+    if (!user) {
+        return <LoadingPage></LoadingPage>
+    }
 
     return (
             <Container component={Paper} maxWidth="xs" sx={{my: 'auto'}}>

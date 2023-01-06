@@ -11,9 +11,11 @@ import { getTokenAction } from "../../actions/actionCreators";
 import PlaidLink from "./PlaidLink";
 import BankListItem from './BankListItem';
 import {v4 as uuid} from 'uuid'
+import { useNavigate } from 'react-router-dom';
 
 function PlaidPage() {
-    const banks = useSelector(store => store.plaid.banks.institutions)
+    const user = useSelector(store => store.auth.user)
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const generateToken = useCallback(
         () => {
@@ -21,40 +23,45 @@ function PlaidPage() {
         }
     )
     useEffect(() => {
+        if (!user) {
+            navigate('/')
+        }
         generateToken();
-    }, [dispatch, generateToken])
+    }, [generateToken])
     return (
-        <Container component={Paper} maxWidth="xs">
-            <CssBaseline />
-            <Box
-                sx={{
-                    marginTop: 8,
-                    marginBottom: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    minHeight: '400px'
-                }}
-            >
-                {alert}
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <AccountBalanceIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Let's connect to a bank!
-                </Typography>
-                <Box sx={{ mv: 3 }}>
-                    <List sx={{width: '100%', maxHeight: '360px', overflow: 'auto'}}>
-                        {banks.map(bank => {
-                            return <BankListItem bank={bank} key={uuid()}></BankListItem>
-                        })}
-                        {console.log('banks:', banks)}
-                    </List>
-                    <PlaidLink></PlaidLink>
-                    
-                </Box>
-                {banks.length > 0? <Button variant='contained' color='success'>Finish</Button> : null}
-            </Box>
+        <Container component={Paper} maxWidth="xs" sx={{ my: 'auto' }}>
+            {
+                user ? <><CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        marginBottom: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        minHeight: '400px'
+                    }}
+                >
+                    {alert}
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <AccountBalanceIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Let's connect to a bank!
+                    </Typography>
+                    <Box sx={{ mv: 3 }}>
+                        <List sx={{width: '100%', maxHeight: '360px', overflow: 'auto'}}>
+                            {user.banks.map(bank => {
+                                return <BankListItem bank={bank} key={uuid()}></BankListItem>
+                            })}
+                        </List>
+                        <PlaidLink></PlaidLink>
+                        
+                    </Box>
+                    {user.banks.length > 0? <Button variant='contained' color='success' sx={{mb: 0}} onClick={() => navigate('/')}>Finish</Button> : null}
+                </Box> </> : null
+            }
+            
         </Container>
     );
 }

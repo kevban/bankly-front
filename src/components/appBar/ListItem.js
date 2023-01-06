@@ -9,27 +9,34 @@ import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import { logOut } from '../../actions/actionCreators';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import LogoutDialog from './LogoutDialog';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
-export const mainListItems = (
-  <React.Fragment>
-    <ListItemButton>
+const MainListItems = () => {
+  const navigate = useNavigate()
+  const handleClick = (route) => {
+    navigate(`/${route}`)
+  }
+  return (
+    <>
+    <ListItemButton onClick={() => handleClick('dashboard')}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton onClick={() => handleClick('transactions')}>
       <ListItemIcon>
-        <ShoppingCartIcon />
+        <ReceiptIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <ListItemText primary="Transactions" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Customers" />
-    </ListItemButton>
+    
     <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
@@ -42,31 +49,57 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItemButton>
-  </React.Fragment>
-);
+    </>
+  )
+}
 
-export const secondaryListItems = (
-  <React.Fragment>
-    <ListSubheader component="div" inset>
-      Saved reports
-    </ListSubheader>
-    <ListItemButton>
+const SecondaryListItems = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const handleLogOut = () => {
+    dispatch(logOut())
+    navigate('/')
+  }
+  const handleClick = (route) => {
+    navigate(`/${route}`)
+  }
+
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <>
+      <ListSubheader component="div" inset>
+        Saved reports
+      </ListSubheader>
+      <ListItemButton>
+        <ListItemIcon>
+          <AssignmentIcon />
+        </ListItemIcon>
+        <ListItemText primary="Current month" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <AssignmentIcon />
+        </ListItemIcon>
+        <ListItemText primary="Last quarter" />
+      </ListItemButton>
+      <ListItemButton onClick={() => handleClick('connect')}>
       <ListItemIcon>
-        <AssignmentIcon />
+        <AccountBalanceIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Connect to Banks" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItemButton>
-  </React.Fragment>
-);
+      <ListItemButton onClick={() => setOpen(true)}>
+        <ListItemIcon>
+          <PowerSettingsNewIcon color='error' />
+        </ListItemIcon>
+        <ListItemText primary="Log Out" primaryTypographyProps={{
+          color: 'error',
+        }} />
+      </ListItemButton>
+      <LogoutDialog open={open} setOpen={setOpen} handleLogOut={handleLogOut}/>
+    </>
+  )
+}
+
+export {MainListItems, SecondaryListItems}
