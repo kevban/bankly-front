@@ -20,10 +20,11 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 // import Chart from './Chart';
 import useToggle from '../../hooks/useToggle';
 import BanklyDrawer from './BanklyDrawer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AddTransactionButton from '../addTransactionPage/AddTransactionButton';
 import { useLocation } from 'react-router-dom';
 import AddTransactionDrawer from '../addTransactionPage/AddTransactionDrawer';
+import AddTransactionPage from '../addTransactionPage/AddTransactionPage';
 
 
 
@@ -52,14 +53,7 @@ const BanklyAppBar = () => {
     }),
   }));
 
-  const DrawerHeader = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-  }));
+
 
   const [appBarTitle, setAppBarTtitle] = React.useState('Bank.ly')
   const [open, toggleDrawer] = useToggle(false);
@@ -71,7 +65,6 @@ const BanklyAppBar = () => {
     } else {
       setTransactionFab(false)
     }
-    console.log('ran', transactionFab)
   }, [pathname])
   return <>
     <AppBar position="absolute" open={open}>
@@ -101,11 +94,6 @@ const BanklyAppBar = () => {
         >
           {appBarTitle}
         </Typography>
-        <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
       </Toolbar>
     </AppBar>
     {user ? <>

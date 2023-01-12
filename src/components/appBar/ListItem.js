@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux';
 import LogoutDialog from './LogoutDialog';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import RuleFolderIcon from '@mui/icons-material/RuleFolder';
 
 const MainListItems = () => {
   const navigate = useNavigate()
@@ -37,17 +38,17 @@ const MainListItems = () => {
       <ListItemText primary="Transactions" />
     </ListItemButton>
     
+    <ListItemButton onClick={() => handleClick('rules')}>
+      <ListItemIcon>
+        <RuleFolderIcon />
+      </ListItemIcon>
+      <ListItemText primary="Rules" />
+    </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
+      <ListItemText primary="Charts" />
     </ListItemButton>
     </>
   )
@@ -68,21 +69,6 @@ const SecondaryListItems = () => {
 
   return (
     <>
-      <ListSubheader component="div" inset>
-        Saved reports
-      </ListSubheader>
-      <ListItemButton>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="Current month" />
-      </ListItemButton>
-      <ListItemButton>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="Last quarter" />
-      </ListItemButton>
       <ListItemButton onClick={() => handleClick('connect')}>
       <ListItemIcon>
         <AccountBalanceIcon />

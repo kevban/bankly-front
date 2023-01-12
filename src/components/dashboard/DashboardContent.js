@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 // import Chart from './Chart';
-import Deposits from '../Deposits';
 import Orders from './TransactionsList';
 import TransactionsList from './TransactionsList';
+import Summary from './Summary';
+import Graph from './Graph';
 
 
 
@@ -19,10 +20,10 @@ function DashboardContent() {
                         p: 2,
                         display: 'flex',
                         flexDirection: 'column',
-                        height: 240,
+                        height: 240
                     }}
                 >
-                    {/* <Chart /> */}
+                    {/* <Graph></Graph> */}
                 </Paper>
             </Grid>
             {/* Recent Deposits */}
@@ -35,7 +36,7 @@ function DashboardContent() {
                         height: 240,
                     }}
                 >
-                    <Deposits />
+                    <Summary></Summary>
                 </Paper>
             </Grid>
             {/* Recent Orders */}

@@ -18,7 +18,9 @@ import useLocalStorage from './hooks/useLocalStorage';
 import { useEffect } from 'react';
 import BanklyApi from './BanklyAPI';
 import TransactionsList from './components/dashboard/TransactionsList';
-import TransactionPage from './components/transactionPage/TransactionPage';
+import TransactionPage from './components/dashboard/TransactionPage';
+import EditTransactionPage from './components/addTransactionPage/EditTransactionPage';
+import RulesPage from './components/addRulePage/RulesPage';
 
 
 function App() {
@@ -54,8 +56,10 @@ function App() {
               <Route exact path='/login' element={<SignIn setToken={setToken}></SignIn>}></Route>
               <Route exact path='/dashboard' element={<Dashboard></Dashboard>}></Route>
               <Route exact path='/transactions' element={<TransactionPage></TransactionPage>}></Route>
+              <Route exact path='/transactions/:id' element={<EditTransactionPage></EditTransactionPage>}></Route>
               <Route exact path='/landing' element={<Landing></Landing>}></Route>
               <Route exact path='/connect' element={<PlaidPage></PlaidPage>}></Route>
+              <Route exact path='/rules' element={<RulesPage></RulesPage>}></Route>
               <Route exact path='/' element={<Redirect></Redirect>}></Route>
               <Route path='*' element={<h1>404 Not Found</h1>}></Route>
             </Routes>

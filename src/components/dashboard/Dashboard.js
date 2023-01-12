@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-// import Chart from './Chart';
-import Deposits from '../Deposits';
-import Orders from './TransactionsList';
 import Copyright from '../Copyright';
 import BanklyAppBar from '../appBar/BanklyAppBar';
 import { useDispatch, useSelector } from 'react-redux'

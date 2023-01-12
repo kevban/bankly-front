@@ -1,24 +1,33 @@
-import { TextField, Paper, Select, Chip, MenuItem, InputLabel, FormControl, Grid, Pagination, InputAdornment, Button, Input, List, Stack, Dialog, ListItemIcon, IconButton } from '@mui/material'
+import { TextField, Paper, Select, Chip, MenuItem, InputLabel, FormControl, Grid, Pagination, InputAdornment, Button, Input, List, Stack, Dialog, ListItemIcon, IconButton, Typography } from '@mui/material'
 import { Container } from '@mui/system'
 import { useFormik } from 'formik'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import LoadingPage from '../LoadingPage'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddCategoryDialog from './categoryManagement/AddCategoryDialog'
 import CategorySelectView from './CategorySelectView'
-import { addCategory as addCategoryAction, removeCategory as removeCategoryAction, addTag as addTagAction, removeTag as removeTagAction, addTransction as addTransactionAction } from '../../actions/actionCreators'
+import {
+    addCategory as addCategoryAction,
+    removeCategory as removeCategoryAction,
+    addTag as addTagAction,
+    removeTag as removeTagAction,
+    editTransction as editTransactionAction,
+    deleteTransaction as deleteTransactionAction
+} from '../../actions/actionCreators'
 import RemoveCategoryDialog from './categoryManagement/RemoveCategoryDialog'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { v4 as uuid } from 'uuid'
+import CategoryIcon from './CategoryIcon'
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
-
-
-const AddTransactionPage = ({ closeDrawer }) => {
+const EditTransactionPage = () => {
+    const { id } = useParams()
     const user = useSelector(store => store.auth.user)
+    const transaction = useSelector(store => user ? store.auth.user.transactions.find(val => val.transaction_id === id) : {});
     const navigate = useNavigate()
     const dispatch = useDispatch()
     useEffect(() => {
@@ -32,14 +41,19 @@ const AddTransactionPage = ({ closeDrawer }) => {
 
     const handleSubmit = (values) => {
         const transactionObj = {
-            transaction_id: uuid(),
-            amount: parseFloat(values.amount),
+            transaction_id: transaction.transaction_id,
             ...values
         }
-        console.log(transactionObj)
-        dispatch(addTransactionAction(transactionObj))
-        closeDrawer({})
+        dispatch(editTransactionAction(transactionObj))
+        navigate('/')
     }
+
+    const handleDelete = () => {
+        dispatch(deleteTransactionAction(transaction.transaction_id))
+        navigate('/')
+    }
+
+
 
     const addTag = (evt) => {
         evt.stopPropagation();
@@ -65,12 +79,12 @@ const AddTransactionPage = ({ closeDrawer }) => {
 
     const formik = useFormik({
         initialValues: {
-            amount: '',
-            date: moment().format('YYYY-MM-DD'),
-            name: '',
-            category: [], // this is actually tags. It is named category to integrate w/ plaid
-            bankly_category: user.user.categories[0], // this is the actually category
-            account_name: 'Cash'
+            amount: transaction ? transaction.amount : '',
+            date: transaction ? transaction.date : moment().format('YYYY-MM-DD'),
+            name: transaction ? transaction.name : '',
+            category: transaction ? transaction.category : [], // this is actually tags. It is named category to integrate w/ plaid
+            bankly_category: transaction ? transaction.bankly_category : user.user.categories[0], // this is the actually category
+            account_name: transaction ? transaction.account_name : 'Cash'
         },
         onSubmit: handleSubmit
     })
@@ -104,8 +118,8 @@ const AddTransactionPage = ({ closeDrawer }) => {
     }
 
     return (
-        <Container sx={{ mt: '40px', p: '20px', display: 'flex', flexDirection: 'column' }} >
-            <h1>Add a Transaction</h1>
+        <Container component={Paper} sx={{ mt: '40px', p: '20px', display: 'flex', flexDirection: 'column' }} >
+            <h1>Edit Transaction</h1>
             <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={2}>
                     <Grid item xs={8}>
@@ -114,6 +128,7 @@ const AddTransactionPage = ({ closeDrawer }) => {
                             placeholder={'Transaction amount'}
                             value={formik.values.amount}
                             onChange={formik.handleChange}
+                            disabled={!!transaction.account_id}
                             name={'amount'}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -128,6 +143,7 @@ const AddTransactionPage = ({ closeDrawer }) => {
                             name="date"
                             type="date"
                             value={formik.values.date}
+                            disabled={!!transaction.account_id}
                             onChange={formik.handleChange}
                             InputLabelProps={{
                                 shrink: true,
@@ -153,6 +169,7 @@ const AddTransactionPage = ({ closeDrawer }) => {
                             label={'Description'}
                             placeholder={'Enter a short description of the transaction ...'}
                             value={formik.values.name}
+                            disabled={!!transaction.account_id}
                             InputLabelProps={{ shrink: true }}
                             onChange={formik.handleChange}
                             name={'name'}
@@ -217,12 +234,21 @@ const AddTransactionPage = ({ closeDrawer }) => {
                             value={formik.values.account_name}
                             onChange={formik.handleChange}
                             name={'account_name'}
+                            disabled={!!transaction.account_id}
                             fullWidth
                         ></TextField>
                     </Grid>
+                    <Grid item xs={12}>
+                        <Stack spacing={2} direction='row' sx={{ mt: '10px', mx: 'auto' }} justifyContent={'center'}>
+                            <Button onClick={() => navigate('/')} variant='contained' color="secondary" >Cancel</Button>
+                            <Button onClick={handleDelete} variant='contained' color="error" disabled={!!transaction.account_id}>Delete</Button>
+                            <Button type={'submit'} variant='contained'>Save</Button>
+                        </Stack>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {transaction.account_id ? <p>* Some fields cannot be changed for imported transactions!</p> : null}
+                    </Grid>
                 </Grid>
-                
-                <Button type={'submit'} variant='contained' sx={{ mt: '10px' }}>Add</Button>
             </form>
             <AddCategoryDialog open={openAddCategory} setOpen={setOpenAddCategory} handleAdd={addCategory}></AddCategoryDialog>
             <RemoveCategoryDialog open={openRemoveCategory} setOpen={setOpenRemoveCategory} handleRemove={removeCategory} categories={user.user.categories}></RemoveCategoryDialog>
@@ -230,4 +256,4 @@ const AddTransactionPage = ({ closeDrawer }) => {
     )
 }
 
-export default AddTransactionPage
+export default EditTransactionPage

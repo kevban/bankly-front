@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Typography } from '@mui/material';
-import CategorySelectView from './CategorySelectView';
+import CategorySelectView from '../CategorySelectView';
 import { MuiColorInput } from 'mui-color-input';
 import { Stack } from '@mui/system';
-import CategoryIcon from './CategoryIcon';
+import CategoryIcon from '../CategoryIcon';
+import { v4 as uuid } from 'uuid';
 
 function AddCategoryDialog({ open, setOpen, handleAdd }) {
 
@@ -43,7 +44,7 @@ function AddCategoryDialog({ open, setOpen, handleAdd }) {
 
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        const category = {...selectedIcon, name: categoryDescription}
+        const category = {...selectedIcon, name: categoryDescription, id: uuid()}
         console.log(category)
         handleAdd(category)
         setOpen(false);
@@ -55,6 +56,7 @@ function AddCategoryDialog({ open, setOpen, handleAdd }) {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="logout-dialog-title"
+                fullWidth
             >
                 <DialogTitle id="logout-dialog-title">Add a Category</DialogTitle>
                 <DialogContent>

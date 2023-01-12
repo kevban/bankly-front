@@ -5,73 +5,27 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Title from '../Title';
+import Title from './Title';
 import BanklyApi from '../../BanklyAPI';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Pagination, Stack } from '@mui/material';
+import { Button, Chip, Drawer, Pagination, Stack } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
 import moment from 'moment';
 import { storeUser } from '../../actions/actionCreators';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
-import CategoryChip from './CategoryChip';
-import { autoBatchEnhancer } from '@reduxjs/toolkit';
-import { CellWifi } from '@mui/icons-material';
 import { updateTransactions as updateTransactionsAction } from '../../actions/actionCreators';
 import usePagination from '../../hooks/usePagination';
-
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-
+import getIcon from '../../icons'
+import CategoryIcon from '../addTransactionPage/CategoryIcon';
+import AddTransactionPage from '../addTransactionPage/AddTransactionPage';
+import { showEditTransactionDrawer } from '../../actions/actionCreators';
+import {v4 as uuid} from 'uuid'
 
 
 
-const rows = [
-  createData(
-    0,
-    '16 Mar, 2019',
-    'Elvis Presley',
-    'Tupelo, MS',
-    'VISA ⠀•••• 3719',
-    312.44,
-  ),
-  createData(
-    1,
-    '16 Mar, 2019',
-    'Paul McCartney',
-    'London, UK',
-    'VISA ⠀•••• 2574',
-    866.99,
-  ),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(
-    3,
-    '16 Mar, 2019',
-    'Michael Jackson',
-    'Gary, IN',
-    'AMEX ⠀•••• 2000',
-    654.39,
-  ),
-  createData(
-    4,
-    '15 Mar, 2019',
-    'Bruce Springsteen',
-    'Long Branch, NJ',
-    'VISA ⠀•••• 5919',
-    212.79,
-  ),
-];
-
-function preventDefault(event) {
-  event.preventDefault();
-}
-
-function TransactionsList({maxPageLength}) {
-
+function TransactionsList({ maxPageLength }) {
   const user = useSelector(store => store.auth.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -108,6 +62,7 @@ function TransactionsList({maxPageLength}) {
     return <></>
   }
 
+
   return (
     <React.Fragment>
       <div style={{ position: 'relative' }}>
@@ -124,7 +79,7 @@ function TransactionsList({maxPageLength}) {
               <TableCell></TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Category</TableCell>
+              <TableCell>Tag</TableCell>
               <TableCell>Account</TableCell>
               <TableCell align="right">Amount</TableCell>
             </TableRow>
@@ -133,13 +88,20 @@ function TransactionsList({maxPageLength}) {
             {user.transactions.filter((val, idx) => {
               return idx < (page * maxPageLength) && idx >= ((page - 1) * maxPageLength)
             }).map((row) => (
-              <TableRow key={row._id}>
-                <TableCell><Button>View</Button></TableCell>
+              <TableRow 
+              key={uuid()} 
+              onClick={() => {
+                navigate(`/transactions/${row.transaction_id}`)
+              }}
+              hover>
+                <TableCell><CategoryIcon category={row.bankly_category} handleClick={() => { }}></CategoryIcon></TableCell>
                 <TableCell>{row.date}</TableCell>
-                <TableCell>{row.name}</TableCell>
+                <TableCell>
+                  {row.name}
+                </TableCell>
                 <TableCell><Stack direction={'row'} spacing={1}>
                   {row.category.map((category, idx) => (
-                    <CategoryChip category={category} key={idx}></CategoryChip>
+                    <Chip key={uuid()} label={category} variant="outlined" />
                   ))}
                 </Stack></TableCell>
                 <TableCell>{row.account_name}</TableCell>
@@ -148,7 +110,6 @@ function TransactionsList({maxPageLength}) {
             ))}
           </TableBody>
         </Table>
-
       </div>
       <Pagination count={Math.ceil(user.transactions.length / maxPageLength)} sx={{ mx: 'auto', mt: '10px' }} onChange={handlePagination}></Pagination>
     </React.Fragment>

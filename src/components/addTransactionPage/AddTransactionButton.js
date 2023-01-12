@@ -5,7 +5,6 @@ import AddIcon from '@mui/icons-material/Add';
 const AddTransactionButton = ({toggleDrawer}) => {
     return (
         <Fab color="primary" aria-label="add" onClick={(evt) => {
-            console.log('clicked')
             toggleDrawer(evt)
         }} style={{
             position: 'absolute',

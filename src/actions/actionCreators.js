@@ -80,13 +80,31 @@ function removeUser() {
 
 // this action adds a category to the user's profile
 function addCategory(category) {
-    return  async function(dispatch) {
+    return async function (dispatch) {
         try {
             console.log('category', category)
             const res = await BanklyApi.addCategory(category)
             dispatch({
                 type: 'ADD_CATEGORY',
-                data: {...category}
+                data: { ...category }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+
+
+// this action removes a category to the user's profile
+function removeCategory(uuid) {
+    return async function (dispatch) {
+        try {
+            const uuidObj = { uuid: uuid }
+            const res = await BanklyApi.removeCategory(uuidObj)
+            dispatch({
+                type: 'REMOVE_CATEGORY',
+                data: uuid
             })
         } catch (e) {
             console.log(e)
@@ -103,6 +121,112 @@ function logOut() {
     }
 }
 
+// this action adds a category to the user's profile
+function addTag(name) {
+    return async function (dispatch) {
+        try {
+            const nameObj = { name: name }
+            const res = await BanklyApi.addTag(nameObj)
+            dispatch({
+                type: 'ADD_TAG',
+                data: name
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+// this action removes a category to the user's profile
+function removeTag(name) {
+    return async function (dispatch) {
+        try {
+            const nameObj = { name: name }
+            const res = await BanklyApi.removeTag(nameObj)
+            dispatch({
+                type: 'REMOVE_TAG',
+                data: name
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+// this action adds an user created transaction to the database
+function addTransction(transaction) {
+    return async function (dispatch) {
+        try {
+            const res = await BanklyApi.addTransaction(transaction)
+            dispatch({
+                type: 'ADD_TRANSACTION',
+                data: { ...transaction }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+// this action edits a transaction
+function editTransction(transaction) {
+    return async function (dispatch) {
+        try {
+            let res = await BanklyApi.editTransaction(transaction)
+            dispatch({
+                type: 'EDIT_TRANSACTION',
+                data: { ...transaction }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+// this action deletes an user created transaction
+function deleteTransaction(transaction_id) {
+    return async function (dispatch) {
+        try {
+            const idObj = { transaction_id }
+            let res = await BanklyApi.deleteTransaction(idObj)
+            dispatch({
+                type: 'DELETE_TRANSACTION',
+                data: transaction_id
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+function addRule(rule) {
+    return async function (dispatch) {
+        try {
+            let res = await BanklyApi.addRule(rule)
+            dispatch({
+                type: 'ADD_RULE',
+                data: { ...rule }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
+function deleteRule(contains) {
+    return async function (dispatch) {
+        try {
+            let res = await BanklyApi.deleteRule({ contains })
+            dispatch({
+                type: 'DELETE_RULE',
+                data: contains
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
 // retrieves the payload from jwt sent from server. Does not verify it.
 // Also saves the token to localStorage
 function decodeUserJWT(token) {
@@ -112,4 +236,19 @@ function decodeUserJWT(token) {
     return payload
 }
 
-export { getTokenAction, storeUser, logOut, removeUser, addCategory, updateTransactions }
+export {
+    getTokenAction,
+    storeUser,
+    logOut,
+    removeUser,
+    addCategory,
+    updateTransactions,
+    removeCategory,
+    addTag,
+    removeTag,
+    addTransction,
+    editTransction,
+    deleteTransaction,
+    addRule,
+    deleteRule
+}

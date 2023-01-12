@@ -65,7 +65,7 @@ const getIcon = (category) => {
         case -1:
             return <EditIcon></EditIcon>
         default:
-            return category.name.charAt(0)
+            return
 
     }
 }

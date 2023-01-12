@@ -84,7 +84,49 @@ class BanklyApi {
         let res = await this.request('user/categories', data, 'post')
         return res
     }
+
+    static async removeCategory(data) {
+        let res = await this.request('user/categories', data, 'delete')
+        return res
+    }
+
+    static async addTag(data) {
+        let res = await this.request('user/tags', data, 'post')
+        return res
+    }
+
+    static async removeTag(data) {
+        let res = await this.request('user/tags', data, 'delete')
+        return res
+    }
+
+    static async addTransaction(data) {
+        let res = await this.request('user/transactions', data, 'post')
+        return res
+    }
+
+    static async editTransaction(data) {
+        let res = await this.request('user/transactions', data, 'patch')
+        return res
+    }
+
+    static async deleteTransaction(data) {
+        let res = await this.request('user/transactions', data, 'delete')
+        return res
+    }
+
+    static async addRule(data) {
+        let res = await this.request('user/rules', data, 'post')
+        return res
+    }
+
+    static async deleteRule(data) {
+        let res = await this.request('user/rules', data, 'delete')
+        return res
+    }
     
+
+
     static async logOut() {
         localStorage.clear();
         BanklyApi.token = '';
