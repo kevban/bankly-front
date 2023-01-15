@@ -17,11 +17,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { updateTransactions as updateTransactionsAction } from '../../actions/actionCreators';
 import usePagination from '../../hooks/usePagination';
-import getIcon from '../../icons'
+import getIcon from '../../helpers/icons'
 import CategoryIcon from '../addTransactionPage/CategoryIcon';
 import AddTransactionPage from '../addTransactionPage/AddTransactionPage';
 import { showEditTransactionDrawer } from '../../actions/actionCreators';
-import {v4 as uuid} from 'uuid'
+import { v4 as uuid } from 'uuid'
+import { formatNum } from '../../helpers/formatNum';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 
@@ -29,7 +31,9 @@ function TransactionsList({ maxPageLength }) {
   const user = useSelector(store => store.auth.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  const smallScren = useMediaQuery(
+    '(max-width:1200px)'
+  )
   const updateTransactions = async () => {
     setButtonState(1)
     await dispatch(updateTransactionsAction())
@@ -79,7 +83,7 @@ function TransactionsList({ maxPageLength }) {
               <TableCell></TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Tag</TableCell>
+              {smallScren ? null : <TableCell>Tag</TableCell>}
               <TableCell>Account</TableCell>
               <TableCell align="right">Amount</TableCell>
             </TableRow>
@@ -88,24 +92,25 @@ function TransactionsList({ maxPageLength }) {
             {user.transactions.filter((val, idx) => {
               return idx < (page * maxPageLength) && idx >= ((page - 1) * maxPageLength)
             }).map((row) => (
-              <TableRow 
-              key={uuid()} 
-              onClick={() => {
-                navigate(`/transactions/${row.transaction_id}`)
-              }}
-              hover>
+              <TableRow
+                key={uuid()}
+                onClick={() => {
+                  navigate(`/transactions/${row.transaction_id}`)
+                }}
+                hover>
                 <TableCell><CategoryIcon category={row.bankly_category} handleClick={() => { }}></CategoryIcon></TableCell>
                 <TableCell>{row.date}</TableCell>
                 <TableCell>
                   {row.name}
                 </TableCell>
-                <TableCell><Stack direction={'row'} spacing={1}>
+                {smallScren ? null : <TableCell><Stack direction={'row'} spacing={1}>
                   {row.category.map((category, idx) => (
                     <Chip key={uuid()} label={category} variant="outlined" />
                   ))}
-                </Stack></TableCell>
+                </Stack></TableCell>}
+
                 <TableCell>{row.account_name}</TableCell>
-                <TableCell align="right">{`$${row.amount}`}</TableCell>
+                <TableCell align="right">{`${formatNum(row.amount, true)}`}</TableCell>
               </TableRow>
             ))}
           </TableBody>

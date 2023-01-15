@@ -1,116 +1,179 @@
 import { Grid, IconButton } from '@mui/material'
 import { Stack } from '@mui/system'
-import React, { useEffect, useInsertionEffect, useState } from 'react'
+import React, { useCallback, useEffect, useInsertionEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import LoadingPage from '../LoadingPage'
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Title from './Title'
+import { formatNum } from '../../helpers/formatNum'
 import moment from 'moment'
-import { SettingsInputAntennaTwoTone } from '@mui/icons-material'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title as ChartTitle,
+    PointElement,
+    LineElement,
+} from 'chart.js';
+import { Bar, Doughnut, Line } from 'react-chartjs-2';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    ChartTitle,
+    PointElement,
+    LineElement,
+);
 
 
 
 const Graph = () => {
     const user = useSelector(store => store.auth.user)
-    const [chartToDisplay, setChart] = useState(0)
-    const [chartData, setChartData] = useState()
-    const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [
-            {
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                ],
-                borderWidth: 1,
-            },
-        ],
-    };
+    const [chartToDisplay, setCharToDisplay] = useState(true)
+    const [lineChart, setLineChart] = useState({})
+    const [barChart, setBarChart] = useState({})
+    const totalByCategory = useCallback((transactions, month) => {
+        let totals = {};
+        let categories = [];
+        let amounts = [];
+        let colors = [];
+        for (let i = 0; i < transactions.length; i++) {
+            let date = moment(transactions[i].date, 'YYYY-MM-DD');
+            if (date.month() == month) {
+                let category = transactions[i].bankly_category.name;
+                let color = transactions[i].bankly_category.color;
+                if (totals[category] == null) {
+                    console.log(category, totals[category])
+                    totals[category] = 0;
+                    categories.push(category);
+                    amounts.push(0);
+                    colors.push(color);
+                }
+                let index = categories.indexOf(category);
+                amounts[index] += formatNum(transactions[i].amount);
+            }
+        }
+        return [categories, amounts, colors];
+    })
+
+    const totalByDay = useCallback((transactions, month) => {
+        let days = [];
+        let expenses = [];
+        let income = [];
+        for (let i = 1; i <= moment().month(month).daysInMonth(); i++) {
+            days.push(i);
+            expenses.push(0);
+            income.push(0);
+        }
+        for (let i = 0; i < transactions.length; i++) {
+            let date = moment(transactions[i].date, 'YYYY-MM-DD');
+            if (date.month() == month) {
+                let day = date.date();
+                let index = days.indexOf(day);
+                if (transactions[i].amount > 0) {
+                    expenses[index] += formatNum(transactions[i].amount);
+                } else {
+                    income[index] += formatNum(transactions[i].amount);
+                }
+            }
+        }
+        return [days, expenses, income];
+    })
 
 
     useEffect(() => {
-
-    }, [])
-
-    const changeChart = (right) => {
-        if (right) {
-            if (chartToDisplay >= 5) {
-                setChart(0)
-            } else {
-                setChart((chartToDisplay) => chartToDisplay + 1)
-            }
-        } else {
-            if (chartToDisplay <= 0) {
-                setChart(5)
-            } else {
-                setChart((chartToDisplay) => chartToDisplay - 1)
+        if (user) {
+            if (user.transactions) {
+                const curMonth = moment().month()
+                const [categories, amounts, colors] = totalByCategory(user.transactions, curMonth)
+                let barOptions = {
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    elements: {
+                        bar: {
+                            borderWidth: 2,
+                        },
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+                let barData = {
+                    labels: categories,
+                    datasets: [
+                        {
+                            label: '$ amount',
+                            data: amounts,
+                            backgroundColor: colors,
+                            borderColor: colors,
+                            borderWidth: 1,
+                        },
+                    ],
+                }
+                setBarChart({ options: barOptions, data: barData })
+                const [days, expenses, income] = totalByDay(user.transactions, curMonth)
+                let lineOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+                let lineData = {
+                    labels: days,
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: income,
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        },
+                        {
+                            label: 'Expenses',
+                            data: expenses,
+                            borderColor: 'rgb(53, 162, 235)',
+                            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                        },
+                    ],
+                }
+                setLineChart({ options: lineOptions, data: lineData })
             }
         }
-    }
-    const [stats, setStats] = useState([
-        {
-            type: 'Expenses',
-            amount: 0,
-            period: `For the month of ${moment().format('MMMM')}`
-        },
-        {
-            type: 'Expenses',
-            amount: 0,
-            period: `${moment().format('YYYY')} Year to date`
-        },
-        {
-            type: 'Expenses',
-            amount: 0,
-            period: `Since inception`
-        },
-        {
-            type: 'Income',
-            amount: 0,
-            period: `For the month of ${moment().format('MMMM')}`
-        },
-        {
-            type: 'Income',
-            amount: 0,
-            period: `${moment().format('YYYY')} Year to date`
-        },
-        {
-            type: 'Income',
-            amount: 0,
-            period: `Since inception`
-        }
-    ])
-
-    if (!user) {
+    }, [user])
+    if (!user || !lineChart.options) {
         return <LoadingPage></LoadingPage>
     }
     return (
         <>
             <Title>This Month</Title>
             <Grid container alignItems={'center'} sx={{ my: 'auto' }}>
-                <Grid item xs={2}><IconButton onClick={() => changeChart(false)}><ArrowLeftIcon></ArrowLeftIcon></IconButton></Grid>
+                <Grid item xs={2}><IconButton onClick={() => setCharToDisplay((curChart => !curChart))}><ArrowLeftIcon></ArrowLeftIcon></IconButton></Grid>
                 <Grid item xs={8}>
-                    <Doughnut data={data}></Doughnut>
+                    <div style={{ height: "240px" }}>
+                        {chartToDisplay ?
+                            <Bar
+                                data={barChart.data}
+                                options={barChart.options}
+                                style={{ height: '240px' }}
+                            ></Bar> :
+                            <Line
+                                data={lineChart.data}
+                                options={lineChart.options}
+                                style={{ height: '240px' }}
+                            ></Line>}
+                    </div>
+
                 </Grid>
-                <Grid item xs={2}><IconButton onClick={() => changeChart(true)}><ArrowRightIcon></ArrowRightIcon></IconButton></Grid>
+                <Grid item xs={2}><IconButton onClick={() => setCharToDisplay((curChart => !curChart))}><ArrowRightIcon></ArrowRightIcon></IconButton></Grid>
             </Grid>
         </>
 

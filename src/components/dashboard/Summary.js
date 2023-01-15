@@ -7,6 +7,7 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Title from './Title'
 import moment from 'moment'
+import { formatNum } from '../../helpers/formatNum'
 import { SettingsInputAntennaTwoTone } from '@mui/icons-material'
 
 
@@ -100,7 +101,7 @@ const Summary = () => {
             ]
             for (let transaction of user.transactions) {
                 let dateParts = transaction.date.split('-')
-                let amount = Number(transaction.amount)
+                let amount = formatNum(transaction.amount)
                 if (dateParts[0] == curYear) {
                     if (transaction.amount > 0) {
                         stats[1].amount += amount
@@ -135,7 +136,7 @@ const Summary = () => {
                 <Grid item xs={2}><IconButton onClick={() => changeStat(false)}><ArrowLeftIcon></ArrowLeftIcon></IconButton></Grid>
                 <Grid item xs={8}>
                     <h3>{stats[statToDisplay].type}</h3>
-                    <h2>${stats[statToDisplay].amount}</h2>
+                    <h2>{formatNum(stats[statToDisplay].amount, true)}{}</h2>
                     <p>{stats[statToDisplay].period}</p>
                 </Grid>
                 <Grid item xs={2}><IconButton onClick={() => changeStat(true)}><ArrowRightIcon></ArrowRightIcon></IconButton></Grid>

@@ -44,12 +44,12 @@ const MainListItems = () => {
       </ListItemIcon>
       <ListItemText primary="Rules" />
     </ListItemButton>
-    <ListItemButton>
+    {/* <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Charts" />
-    </ListItemButton>
+    </ListItemButton> */}
     </>
   )
 }

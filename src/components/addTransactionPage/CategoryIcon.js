@@ -1,6 +1,6 @@
 import { Avatar, Button, Typography } from '@mui/material'
 import React from 'react'
-import getIcon from '../../icons'
+import getIcon from '../../helpers/icons'
 
 
 const CategoryIcon = ({ category, selected=true, handleClick=(() => {}) }) => {
