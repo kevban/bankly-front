@@ -14,6 +14,7 @@ import { addCategory as addCategoryAction, removeCategory as removeCategoryActio
 import RemoveCategoryDialog from './categoryManagement/RemoveCategoryDialog'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { v4 as uuid } from 'uuid'
+import * as Yup from 'yup'
 
 
 
@@ -62,6 +63,17 @@ const AddTransactionPage = ({ closeDrawer }) => {
     const removeCategory = (category) => {
         dispatch(removeCategoryAction(category.id))
     }
+    const transactionSchema = Yup.object().shape({
+        amount: Yup.number()
+            .required('Please enter an amount')
+            .typeError('you must specify a number'),
+        name: Yup.string()
+            .required('Please enter a description'),
+        account_name: Yup.string()
+            .required('Please enter an account name (e.g. Cash)'),
+        lastName: Yup.string()
+            .required('Please enter last name')
+    })
 
     const formik = useFormik({
         initialValues: {
@@ -72,7 +84,8 @@ const AddTransactionPage = ({ closeDrawer }) => {
             bankly_category: user.user.categories[0], // this is the actually category
             account_name: 'Cash'
         },
-        onSubmit: handleSubmit
+        onSubmit: handleSubmit,
+        validationSchema: transactionSchema
     })
 
     const handleTagSelect = (event) => {
@@ -119,6 +132,8 @@ const AddTransactionPage = ({ closeDrawer }) => {
                                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
                             }}
                             fullWidth
+                            error={formik.touched.amount && Boolean(formik.errors.amount)}
+                            helperText={formik.touched.amount && formik.errors.amount}
                         ></TextField>
                     </Grid>
                     <Grid item xs={4}>
@@ -157,6 +172,8 @@ const AddTransactionPage = ({ closeDrawer }) => {
                             onChange={formik.handleChange}
                             name={'name'}
                             fullWidth
+                            error={formik.touched.name && Boolean(formik.errors.name)}
+                            helperText={formik.touched.name && formik.errors.name}
                         ></TextField>
                     </Grid>
                     <Grid item xs={12}>
@@ -217,6 +234,8 @@ const AddTransactionPage = ({ closeDrawer }) => {
                             value={formik.values.account_name}
                             onChange={formik.handleChange}
                             name={'account_name'}
+                            error={formik.touched.account_name && Boolean(formik.errors.account_name)}
+                            helperText={formik.touched.account_name && formik.errors.account_name}
                             fullWidth
                         ></TextField>
                     </Grid>

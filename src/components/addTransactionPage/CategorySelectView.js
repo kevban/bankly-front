@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid'
 const CategorySelectView = ({ categories, selected, handleClick, maxPage = 6 }) => {
     const [page, handlePagination] = usePagination()
     // to render empty boxes in stack
-    const emptyCategories = Array(categories.length % maxPage).fill(null);
+    const emptyCategories = Array(maxPage - categories.length % maxPage).fill(null);
     const pages = Math.ceil(categories.length / maxPage)
     return (<Stack justifyContent={'center'}>
         <Stack justifyContent={"space-evenly"} direction={"row"}>

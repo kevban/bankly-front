@@ -21,8 +21,7 @@ import {
 import RemoveCategoryDialog from './categoryManagement/RemoveCategoryDialog'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { v4 as uuid } from 'uuid'
-import CategoryIcon from './CategoryIcon'
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import * as Yup from 'yup'
 
 const EditTransactionPage = () => {
     const { id } = useParams()
@@ -30,6 +29,7 @@ const EditTransactionPage = () => {
     const transaction = useSelector(store => user ? store.auth.user.transactions.find(val => val.transaction_id === id) : {});
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
     useEffect(() => {
         if (user) {
             if (!user.token) {
@@ -57,7 +57,7 @@ const EditTransactionPage = () => {
 
     const addTag = (evt) => {
         evt.stopPropagation();
-        if (evt.keyCode === 13) {
+        if (evt.keyCode === 13 && evt.target.value.length > 0) {
             dispatch(addTagAction(evt.target.value))
             evt.target.value = ''
         }
@@ -77,6 +77,18 @@ const EditTransactionPage = () => {
         dispatch(removeCategoryAction(category.id))
     }
 
+    const transactionSchema = Yup.object().shape({
+        amount: Yup.number()
+            .required('Please enter an amount')
+            .typeError('you must specify a number'),
+        name: Yup.string()
+            .required('Please enter a description'),
+        account_name: Yup.string()
+            .required('Please enter an account name (e.g. Cash)'),
+        lastName: Yup.string()
+            .required('Please enter last name')
+    })
+
     const formik = useFormik({
         initialValues: {
             amount: transaction ? transaction.amount : '',
@@ -86,7 +98,8 @@ const EditTransactionPage = () => {
             bankly_category: transaction ? transaction.bankly_category : user.user.categories[0], // this is the actually category
             account_name: transaction ? transaction.account_name : 'Cash'
         },
-        onSubmit: handleSubmit
+        onSubmit: handleSubmit,
+        validationSchema: transactionSchema
     })
 
     const handleTagSelect = (event) => {
@@ -134,6 +147,8 @@ const EditTransactionPage = () => {
                                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
                             }}
                             fullWidth
+                            error={formik.touched.amount && Boolean(formik.errors.amount)}
+                            helperText={formik.touched.amount && formik.errors.amount}
                         ></TextField>
                     </Grid>
                     <Grid item xs={4}>
@@ -174,6 +189,8 @@ const EditTransactionPage = () => {
                             onChange={formik.handleChange}
                             name={'name'}
                             fullWidth
+                            error={formik.touched.name && Boolean(formik.errors.name)}
+                            helperText={formik.touched.name && formik.errors.name}
                         ></TextField>
                     </Grid>
                     <Grid item xs={12}>
@@ -236,6 +253,8 @@ const EditTransactionPage = () => {
                             name={'account_name'}
                             disabled={!!transaction.account_id}
                             fullWidth
+                            error={formik.touched.account_name && Boolean(formik.errors.account_name)}
+                            helperText={formik.touched.account_name && formik.errors.account_name}
                         ></TextField>
                     </Grid>
                     <Grid item xs={12}>

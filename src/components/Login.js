@@ -39,7 +39,6 @@ function SignIn({setToken}) {
         }
 
     };
-
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -104,10 +103,6 @@ function SignIn({setToken}) {
                             id="password"
                             autoComplete="current-password"
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
                         <Button
                             type="submit"
                             fullWidth
@@ -117,11 +112,6 @@ function SignIn({setToken}) {
                             Sign In
                         </Button>
                         <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
                             <Grid item>
                                 <Link component={RouterLink} to='/signup' variant="body2">
                                     {"Don't have an account? Sign Up"}

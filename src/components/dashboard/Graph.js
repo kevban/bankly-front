@@ -48,7 +48,7 @@ const Graph = () => {
         let colors = [];
         for (let i = 0; i < transactions.length; i++) {
             let date = moment(transactions[i].date, 'YYYY-MM-DD');
-            if (date.month() == month) {
+            if (date.month() == month && transactions[i].amount > 0) {
                 let category = transactions[i].bankly_category.name;
                 let color = transactions[i].bankly_category.color;
                 if (totals[category] == null) {
@@ -82,7 +82,7 @@ const Graph = () => {
                 if (transactions[i].amount > 0) {
                     expenses[index] += formatNum(transactions[i].amount);
                 } else {
-                    income[index] += formatNum(transactions[i].amount);
+                    income[index] += formatNum(-transactions[i].amount);
                 }
             }
         }

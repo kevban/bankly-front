@@ -42,7 +42,6 @@ function PlaidPage() {
                         minHeight: '400px'
                     }}
                 >
-                    {alert}
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <AccountBalanceIcon />
                     </Avatar>

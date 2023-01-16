@@ -21,17 +21,18 @@ import { Paper } from '@mui/material';
 import useAlert from '../hooks/useAlert';
 import BanklyApi from '../BanklyAPI';
 import LoadingPage from './LoadingPage';
+import * as Yup from 'yup'
 
 
-function SignUp({setToken}) {
+function SignUp({ setToken }) {
   const user = useSelector(store => store.auth.user)
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const [alert, createAlert] = useAlert()
   const handleSubmit = async (data) => {
     try {
+      console.log(data)
       let res = await BanklyApi.register(data)
-      console.log('register res:', res.token)
       await dispatch(removeUser())
       setToken(res.token)
       await dispatch(storeUser(res.token))
@@ -41,6 +42,24 @@ function SignUp({setToken}) {
     }
   };
 
+  const loginSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(6, 'Username must be between 6 - 20 characters')
+      .max(20, 'Username must be between 6 - 20 characters')
+      .required('Please enter an username'),
+    password: Yup.string()
+      .min(6, 'Password must be between 6 - 20 characters')
+      .max(20, 'Password must be between 6 - 20 characters')
+      .required('Please enter a password'),
+    firstName: Yup.string()
+      .required('Please enter first name'),
+    lastName: Yup.string()
+      .required('Please enter last name'),
+    email: Yup.string()
+      .email('Please enter a valid email')
+      .required('Please enter a valid email'),
+  })
+
   useEffect(() => {
     if (user) {
       if (user.token) {
@@ -49,7 +68,7 @@ function SignUp({setToken}) {
     }
   }, [user])
 
-  
+
 
   const formik = useFormik({
     initialValues: {
@@ -59,7 +78,8 @@ function SignUp({setToken}) {
       lastName: '',
       email: ''
     },
-    onSubmit: handleSubmit
+    onSubmit: handleSubmit,
+    validationSchema: loginSchema
   })
 
 
@@ -98,6 +118,8 @@ function SignUp({setToken}) {
                 id="username"
                 label="Username"
                 autoFocus
+                error={formik.touched.username && Boolean(formik.errors.username)}
+                helperText={formik.touched.username && formik.errors.username}
               />
             </Grid>
             <Grid item xs={6} sm={6}>
@@ -111,6 +133,8 @@ function SignUp({setToken}) {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                helperText={formik.touched.firstName && formik.errors.firstName}
               />
             </Grid>
             <Grid item xs={6} sm={6}>
@@ -123,6 +147,8 @@ function SignUp({setToken}) {
                 onChange={formik.handleChange}
                 name="lastName"
                 autoComplete="family-name"
+                error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                helperText={formik.touched.lastName && formik.errors.lastName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -135,6 +161,8 @@ function SignUp({setToken}) {
                 onChange={formik.handleChange}
                 name="email"
                 autoComplete="email"
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -148,6 +176,8 @@ function SignUp({setToken}) {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                error={formik.touched.password && Boolean(formik.errors.password)}
+                helperText={formik.touched.password && formik.errors.password}
               />
             </Grid>
           </Grid>
