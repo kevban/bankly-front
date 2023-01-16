@@ -24,6 +24,7 @@ import { showEditTransactionDrawer } from '../../actions/actionCreators';
 import { v4 as uuid } from 'uuid'
 import { formatNum } from '../../helpers/formatNum';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import _ from 'lodash';
 
 
 
@@ -38,6 +39,16 @@ function TransactionsList({ maxPageLength }) {
     setButtonState(1)
     await dispatch(updateTransactionsAction())
     setButtonState(2)
+  }
+
+  function compareDate(a, b) {
+    if (moment(a.date).isAfter(moment(b.date))) {
+      return -1
+    } else if (moment(b.date).isAfter(moment(a.date))) {
+      return 1
+    } else {
+      return 0
+    }
   }
 
   // 0 is refresh, 1 is refreshing, 2 is refreshed
@@ -89,7 +100,7 @@ function TransactionsList({ maxPageLength }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {user.transactions.filter((val, idx) => {
+            {_.cloneDeep(user.transactions).sort(compareDate).filter((val, idx) => {
               return idx < (page * maxPageLength) && idx >= ((page - 1) * maxPageLength)
             }).map((row) => (
               <TableRow
@@ -120,5 +131,7 @@ function TransactionsList({ maxPageLength }) {
     </React.Fragment>
   );
 }
+
+
 
 export default TransactionsList

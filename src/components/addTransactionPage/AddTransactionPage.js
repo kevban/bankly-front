@@ -1,6 +1,6 @@
 import { TextField, Paper, Select, Chip, MenuItem, InputLabel, FormControl, Grid, Pagination, InputAdornment, Button, Input, List, Stack, Dialog, ListItemIcon, IconButton } from '@mui/material'
 import { Container } from '@mui/system'
-import { useFormik } from 'formik'
+import { useFormik, yupToFormErrors } from 'formik'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,7 +37,6 @@ const AddTransactionPage = ({ closeDrawer }) => {
             amount: parseFloat(values.amount),
             ...values
         }
-        console.log(transactionObj)
         dispatch(addTransactionAction(transactionObj))
         closeDrawer({})
     }
@@ -70,9 +69,8 @@ const AddTransactionPage = ({ closeDrawer }) => {
         name: Yup.string()
             .required('Please enter a description'),
         account_name: Yup.string()
-            .required('Please enter an account name (e.g. Cash)'),
-        lastName: Yup.string()
-            .required('Please enter last name')
+            .required('Please enter an account name (e.g. Cash)')
+    
     })
 
     const formik = useFormik({
@@ -85,7 +83,7 @@ const AddTransactionPage = ({ closeDrawer }) => {
             account_name: 'Cash'
         },
         onSubmit: handleSubmit,
-        validationSchema: transactionSchema
+        validationSchema: transactionSchema,
     })
 
     const handleTagSelect = (event) => {
@@ -148,6 +146,8 @@ const AddTransactionPage = ({ closeDrawer }) => {
                                 shrink: true,
                             }}
                             fullWidth
+                            error={formik.touched.date && Boolean(formik.errors.date)}
+                            helperText={formik.touched.date && formik.errors.date}
                         />
                     </Grid>
                     <Grid item xs={10} sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>

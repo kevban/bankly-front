@@ -232,7 +232,6 @@ function deleteRule(contains) {
 function decodeUserJWT(token) {
     let payload = jwtDecode(token)
     localStorage.setItem('token', token)
-    console.log('decoded token', payload)
     return payload
 }
 

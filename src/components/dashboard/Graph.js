@@ -52,7 +52,6 @@ const Graph = () => {
                 let category = transactions[i].bankly_category.name;
                 let color = transactions[i].bankly_category.color;
                 if (totals[category] == null) {
-                    console.log(category, totals[category])
                     totals[category] = 0;
                     categories.push(category);
                     amounts.push(0);

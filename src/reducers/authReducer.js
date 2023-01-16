@@ -19,7 +19,7 @@ function authReducer(state = INITIAL_STATE, action) {
         case "REMOVE_TAG":
             return { ...state, user: { ...state.user, user: { ...state.user.user, tags: state.user.user.tags.filter(val => val !== action.data) } } }
         case "ADD_TRANSACTION":
-            return { ...state, user: { ...state.user, transactions: [...state.user.transactions, action.data] } }
+            return { ...state, user: { ...state.user, transactions: state.user.transactions? [...state.user.transactions, action.data]: [action.data] } }
         case "DELETE_TRANSACTION":
             return { ...state, user: { ...state.user, transactions: state.user.transactions.filter(val => val.transaction_id !== action.data) } }
         case "EDIT_TRANSACTION":
@@ -52,6 +52,8 @@ function authReducer(state = INITIAL_STATE, action) {
             return state
     }
 }
+
+
 
 export default authReducer
 
