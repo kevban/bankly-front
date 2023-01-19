@@ -27,10 +27,10 @@ function AddCategoryDialog({ open, setOpen, handleAdd }) {
     const handleColorChange = (color) => {
         setColor(color)
         setCategories(() => makeDefaultCategories(color))
-        setSelectedIcon((icon) => { return {...icon, color:color}})
+        setSelectedIcon((icon) => { return { ...icon, color: color } })
     }
 
-    
+
 
     const [categoryDescription, setDescription] = useState('')
 
@@ -44,10 +44,12 @@ function AddCategoryDialog({ open, setOpen, handleAdd }) {
 
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        const category = {...selectedIcon, name: categoryDescription, id: uuid()}
-        console.log(category)
-        handleAdd(category)
-        setOpen(false);
+        if (categoryDescription.length > 0) {
+            const category = { ...selectedIcon, name: categoryDescription, id: uuid() }
+            handleAdd(category)
+            setOpen(false);
+        }
+
     };
 
     return (
@@ -60,7 +62,7 @@ function AddCategoryDialog({ open, setOpen, handleAdd }) {
             >
                 <DialogTitle id="logout-dialog-title">Add a Category</DialogTitle>
                 <DialogContent>
-                    <Stack spacing={2} sx={{mt: '5px'}}>
+                    <Stack spacing={2} sx={{ mt: '5px' }}>
                         <TextField
                             label={'Description'}
                             name={'categoryDescription'}
@@ -69,7 +71,7 @@ function AddCategoryDialog({ open, setOpen, handleAdd }) {
                         ></TextField>
                         <MuiColorInput value={color} onChange={handleColorChange}></MuiColorInput>
                         <Stack spacing={1} direction='row'>
-                            <Typography sx={{my: 'auto'}} variant={'h6'}>Icon: </Typography><CategoryIcon handleClick={() => {}} category={selectedIcon}></CategoryIcon>
+                            <Typography sx={{ my: 'auto' }} variant={'h6'}>Icon: </Typography><CategoryIcon handleClick={() => { }} category={selectedIcon}></CategoryIcon>
                         </Stack>
                         <CategorySelectView categories={categories} handleClick={setSelectedIcon}></CategorySelectView>
                     </Stack>

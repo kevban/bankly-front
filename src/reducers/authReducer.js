@@ -19,7 +19,7 @@ function authReducer(state = INITIAL_STATE, action) {
         case "REMOVE_TAG":
             return { ...state, user: { ...state.user, user: { ...state.user.user, tags: state.user.user.tags.filter(val => val !== action.data) } } }
         case "ADD_TRANSACTION":
-            return { ...state, user: { ...state.user, transactions: state.user.transactions? [...state.user.transactions, action.data]: [action.data] } }
+            return { ...state, user: { ...state.user, transactions: state.user.transactions ? [...state.user.transactions, action.data] : [action.data] } }
         case "DELETE_TRANSACTION":
             return { ...state, user: { ...state.user, transactions: state.user.transactions.filter(val => val.transaction_id !== action.data) } }
         case "EDIT_TRANSACTION":
@@ -36,16 +36,18 @@ function authReducer(state = INITIAL_STATE, action) {
             }
         case "ADD_RULE":
             return {
-                ...state, user: {
+                ...state,
+                user: {
                     ...state.user,
                     user: { ...state.user.user, rules: [...state.user.user.rules, action.data] }
                 },
                 transactions: state.user.transactions.map(transaction => {
                     if (transaction.name.toLowerCase().includes(action.data.contains)) {
-                        transaction.bankly_category = action.data.bankly_category
+                        return {...transaction, bankly_category: action.data.bankly_category};
                     }
-                    return transaction
-                }) }
+                    return {...transaction};
+                })
+            }
         case "DELETE_RULE":
             return { ...state, user: { ...state.user, user: { ...state.user.user, rules: state.user.user.rules.filter(val => val.contains !== action.data) } } }
         default:

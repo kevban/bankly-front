@@ -22,11 +22,14 @@ const RulesPage = () => {
     }
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        const newRule = {contains: description, bankly_category: category}
-        console.log("rules", newRule)
-        setDescription('')
-        setCategory({})
-        dispatch(addRule(newRule))
+        if (description.length > 0) {
+            const newRule = { contains: description, bankly_category: category }
+            console.log("rules", newRule)
+            setDescription('')
+            setCategory({})
+            dispatch(addRule(newRule))
+        }
+
     }
     const handleDelete = (containsText) => {
         dispatch(deleteRule(containsText))
@@ -60,7 +63,7 @@ const RulesPage = () => {
                         <CategorySelectView categories={user.user.categories} handleClick={handleCategoryClick} maxPage={3} selected={category}></CategorySelectView>
                     </Stack>
                 </Stack>
-                <Button color={'success'} variant={'contained'} onClick={handleSubmit} sx={{m: 2}}>Add</Button>
+                <Button color={'success'} variant={'contained'} onClick={handleSubmit} sx={{ m: 2 }}>Add</Button>
             </Container>
             <RulesList rules={user.user.rules || []} handleDelete={handleDelete}></RulesList>
         </>

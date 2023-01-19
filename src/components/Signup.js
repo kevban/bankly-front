@@ -31,7 +31,6 @@ function SignUp({ setToken }) {
   const [alert, createAlert] = useAlert()
   const handleSubmit = async (data) => {
     try {
-      console.log(data)
       let res = await BanklyApi.register(data)
       await dispatch(removeUser())
       setToken(res.token)
@@ -143,7 +142,7 @@ function SignUp({ setToken }) {
                 fullWidth
                 id="lastName"
                 label="Last Name"
-                value={formik.values.LastName}
+                value={formik.values.lastName}
                 onChange={formik.handleChange}
                 name="lastName"
                 autoComplete="family-name"
