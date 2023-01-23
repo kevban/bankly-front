@@ -17,6 +17,7 @@ import LogoutDialog from './LogoutDialog';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import RuleFolderIcon from '@mui/icons-material/RuleFolder';
+import ReconnectDialog from '../dashboard/ReconnectDialog';
 
 const MainListItems = () => {
   const navigate = useNavigate()
@@ -84,6 +85,7 @@ const SecondaryListItems = () => {
         }} />
       </ListItemButton>
       <LogoutDialog open={open} setOpen={setOpen} handleLogOut={handleLogOut}/>
+      <ReconnectDialog></ReconnectDialog>
     </>
   )
 }

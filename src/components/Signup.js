@@ -17,11 +17,14 @@ import { useFormik } from 'formik'
 import { register, removeUser, storeUser } from '../actions/actionCreators';
 import { useDispatch, useSelector } from 'react-redux';
 import Copyright from './Copyright';
-import { Paper } from '@mui/material';
+import { IconButton, Paper, Popover } from '@mui/material';
 import useAlert from '../hooks/useAlert';
 import BanklyApi from '../BanklyAPI';
 import LoadingPage from './LoadingPage';
 import * as Yup from 'yup'
+import { CheckBox } from '@mui/icons-material';
+import { Stack } from '@mui/system';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 
 function SignUp({ setToken }) {
@@ -59,6 +62,15 @@ function SignUp({ setToken }) {
       .required('Please enter a valid email'),
   })
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handlePopoverOpen = (evt) => {
+    setAnchorEl(evt.currentTarget);
+  }
+  const handlePopoverClose = () => {
+    setAnchorEl(null)
+  }
+  const open = Boolean(anchorEl)
+
   useEffect(() => {
     if (user) {
       if (user.token) {
@@ -75,7 +87,8 @@ function SignUp({ setToken }) {
       password: '',
       firstName: '',
       lastName: '',
-      email: ''
+      email: '',
+      sandbox: false
     },
     onSubmit: handleSubmit,
     validationSchema: loginSchema
@@ -180,11 +193,21 @@ function SignUp({ setToken }) {
               />
             </Grid>
           </Grid>
+          <Grid item xs={12} sx={{ my: 2 }}>
+            <Stack direction={'row'} justifyContent={'center'} alignItems={'center'}>
+              <FormControlLabel control={<Checkbox name={'sandbox'} onChange={formik.handleChange}/>} label="Sandbox Mode" />
+              <IconButton
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
+              ><HelpOutlineIcon></HelpOutlineIcon>
+              </IconButton>
+            </Stack>
+          </Grid>
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mb: 2 }}
           >
             Sign Up
           </Button>
@@ -197,6 +220,23 @@ function SignUp({ setToken }) {
           </Grid>
         </Box>
       </Box>
+      <Popover
+        sx={{ pointerEvents: 'none', width: '80%', p: '5px', textAlign: 'center' }}
+        open={open}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left'
+        }}
+        onClose={handlePopoverClose}
+        disableRestoreFocus
+      >
+        <p>In sandbox mode, you can try out the app with simulated transactions from banks without connecting to your real accounts!</p>
+      </Popover>
     </Container>
   );
 }

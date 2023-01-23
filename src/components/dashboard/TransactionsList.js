@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,7 +12,7 @@ import { Button, Chip, Drawer, Pagination, Stack } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
 import moment from 'moment';
-import { storeUser } from '../../actions/actionCreators';
+import { clearPlaidLink, storeUser } from '../../actions/actionCreators';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { updateTransactions as updateTransactionsAction } from '../../actions/actionCreators';
@@ -25,15 +25,23 @@ import { v4 as uuid } from 'uuid'
 import { formatNum } from '../../helpers/formatNum';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import _ from 'lodash';
+import { usePlaidLink } from 'react-plaid-link';
+import ReconnectDialog from './ReconnectDialog';
+import { Box } from '@mui/system';
 
 
 
 function TransactionsList({ maxPageLength }) {
   const user = useSelector(store => store.auth.user)
+  const updateLink = useSelector(store => store.plaid.updateLink)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const smallScren = useMediaQuery(
+  const midScreen = useMediaQuery(
     '(max-width:1200px)'
+  )
+
+  const smScreen = useMediaQuery(
+    '(max-width:800px)'
   )
   const updateTransactions = async () => {
     setButtonState(1)
@@ -71,6 +79,8 @@ function TransactionsList({ maxPageLength }) {
     }
   }
 
+
+
   const [page, handlePagination] = usePagination();
 
   if (!user) {
@@ -94,8 +104,9 @@ function TransactionsList({ maxPageLength }) {
               <TableCell></TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Description</TableCell>
-              {smallScren ? null : <TableCell>Tag</TableCell>}
-              <TableCell>Account</TableCell>
+              {midScreen ? null : <TableCell>Tag</TableCell>}
+              {smScreen ? null : <TableCell><Box width={100}>Account</Box></TableCell>}
+
               <TableCell align="right">Amount</TableCell>
             </TableRow>
           </TableHead>
@@ -114,13 +125,18 @@ function TransactionsList({ maxPageLength }) {
                 <TableCell>
                   {row.name}
                 </TableCell>
-                {smallScren ? null : <TableCell><Stack direction={'row'} spacing={1}>
+                {midScreen ? null : <TableCell><Stack direction={'row'} spacing={1}>
                   {row.category.map((category, idx) => (
                     <Chip key={uuid()} label={category} variant="outlined" />
                   ))}
                 </Stack></TableCell>}
+                {smScreen ? null : <TableCell
+                  style={{
+                    width: 1,
+                    whiteSpace: "normal",
+                    wordWrap: "break-word"
+                  }}><Box width={100}>{row.account_name}</Box></TableCell>}
 
-                <TableCell>{row.account_name}</TableCell>
                 <TableCell align="right">{`${formatNum(row.amount, true)}`}</TableCell>
               </TableRow>
             ))}

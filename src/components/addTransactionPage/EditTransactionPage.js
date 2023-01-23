@@ -40,6 +40,7 @@ const EditTransactionPage = () => {
 
 
     const handleSubmit = (values) => {
+        console.log('wassup')
         const transactionObj = {
             transaction_id: transaction.transaction_id,
             ...values
@@ -84,9 +85,7 @@ const EditTransactionPage = () => {
         name: Yup.string()
             .required('Please enter a description'),
         account_name: Yup.string()
-            .required('Please enter an account name (e.g. Cash)'),
-        lastName: Yup.string()
-            .required('Please enter last name')
+            .required('Please enter an account name (e.g. Cash)')
     })
 
     const formik = useFormik({
