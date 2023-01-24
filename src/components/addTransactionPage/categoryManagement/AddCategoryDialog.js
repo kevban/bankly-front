@@ -14,7 +14,7 @@ function AddCategoryDialog({ open, setOpen, handleAdd }) {
 
     const makeDefaultCategories = (color) => {
         let availableCategories = []
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 21; i++) {
             availableCategories.push({ iconId: i, color: color })
         }
         return availableCategories

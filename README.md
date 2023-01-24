@@ -1,9 +1,11 @@
 # Bank.ly Front End
 The React web front end for the personal finance budgeting app Bank.ly.
 
+[Click here to launch the site!](https://bankly.surge.sh/)
+
 ## What does Bank.ly do?
 
-Bank.ly is a web application that helps users to manage and track their personal finances. It connects to various financial institutions through the Plaid API and automatically pulls in bank transactions. The app then allows users to add and edit transactions and create custom transaction tags and categories. Users can view spending reports and have a clear idea of where their money is going. Additionally, the app is designed to be cross-platform compatible.
+Bank.ly is a personal finance management tool that helps users keep track of their financial transactions and spending habits. By connecting to various financial institutions through the Plaid API, Bank.ly automatically pulls in bank transactions and allows users to easily add and edit them. Users can also create custom tags and categories to better organize their transactions and view detailed spending reports. Additionally, the app is designed to be cross-platform compatible, allowing users to access their financial information on the go.
 
 ## Installation
 
@@ -11,18 +13,29 @@ Bank.ly is a web application that helps users to manage and track their personal
 2. Install dependencies: `npm install`
 3. Start the development server: `npm start`
 
-The app will now be running on `http://localhost:3001`.
+The app will now be running on `http://localhost:3000`.
 
 ## Usage & Key Features
 
 - Easily connect to various financial institutions using [Plaid](https://plaid.com/)
+![screenshot](https://github.com/kevban/bankly-front/screenshots/bank-connect.png)
 - Automatically pull transactions from financial institutions
+![screenshot](https://github.com/kevban/bankly-front/screenshots/transactions.png)
+- Categorize transactions based on user defined rules
+![screenshot](https://github.com/kevban/bankly-front/screenshots/rules.png)
 - Add and edit transactions
+![screenshot](https://github.com/kevban/bankly-front/screenshots/add-transaction.png)
 - Create custom transaction tags and categories
+![screenshot](https://github.com/kevban/bankly-front/screenshots/add-category.png)
 - View spending reports
-- Cross platform compatible
+![screenshot](https://github.com/kevban/bankly-front/screenshots/graph.png)
+- Cross platform compatible. [Bankly Mobile](https://github.com/kevban/bankly-mobile)
 
 ## Technology Used
 - Bankend: Express, Node, MongoDB
 - Frontend: React, Redux, Material-UI
 - Bank API: Plaid
+
+## Other
+- This project was made for Springboard Capstone project 2
+- Also see: [Bank.ly bank-end](https://github.com/kevban/bankly-backend), [Bankly Mobile](https://github.com/kevban/bankly-mobile)
