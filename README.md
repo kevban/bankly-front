@@ -18,17 +18,17 @@ The app will now be running on `http://localhost:3000`.
 ## Usage & Key Features
 
 - Easily connect to various financial institutions using [Plaid](https://plaid.com/)
-![screenshot](https://github.com/kevban/bankly-front/tree/main/screenshots/bank-connect.png)
+![screenshot](screenshots/bank-connect.png)
 - Automatically pull transactions from financial institutions
-![screenshot](https://github.com/kevban/bankly-front/tree/main/screenshots/transactions.png)
+![screenshot](screenshots/transactions.png)
 - Categorize transactions based on user defined rules
-![screenshot](https://github.com/kevban/bankly-front/tree/main/screenshots/rules.png)
+![screenshot](screenshots/rules.png)
 - Add and edit transactions
-![screenshot](https://github.com/kevban/bankly-front/tree/main/screenshots/add-transaction.png)
+![screenshot](screenshots/add-transaction.png)
 - Create custom transaction tags and categories
-![screenshot](https://github.com/kevban/bankly-front/tree/main/screenshots/add-category.png)
+![screenshot](screenshots/add-category.png)
 - View spending reports
-![screenshot](https://github.com/kevban/bankly-front/tree/main/screenshots/graph.png)
+![screenshot](screenshots/graph.png)
 - Cross platform compatible. [Bankly Mobile](https://github.com/kevban/bankly-mobile)
 
 ## Technology Used
