@@ -17,17 +17,17 @@ The app will now be running on `http://localhost:3000`.
 
 ## Usage & Key Features
 
-- Easily connect to various financial institutions using [Plaid](https://plaid.com/)
+- Easily connect to various financial institutions using [Plaid](https://plaid.com/)  
 ![screenshot](screenshots/bank-connect.png)
-- Automatically pull transactions from financial institutions
+- Automatically pull transactions from financial institutions  
 ![screenshot](screenshots/transactions.png)
-- Categorize transactions based on user defined rules
+- Categorize transactions based on user defined rules  
 ![screenshot](screenshots/rules.png)
-- Add and edit transactions
+- Add and edit transactions  
 ![screenshot](screenshots/add-transaction.png)
-- Create custom transaction tags and categories
+- Create custom transaction tags and categories  
 ![screenshot](screenshots/add-category.png)
-- View spending reports
+- View spending reports  
 ![screenshot](screenshots/graph.png)
 - Cross platform compatible. [Bankly Mobile](https://github.com/kevban/bankly-mobile)
 
