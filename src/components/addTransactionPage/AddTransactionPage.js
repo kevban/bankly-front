@@ -1,6 +1,6 @@
-import { TextField, Paper, Select, Chip, MenuItem, InputLabel, FormControl, Grid, Pagination, InputAdornment, Button, Input, List, Stack, Dialog, ListItemIcon, IconButton } from '@mui/material'
+import { TextField, Select, Chip, MenuItem, InputLabel, Grid, InputAdornment, Button, Stack, IconButton } from '@mui/material'
 import { Container } from '@mui/system'
-import { useFormik, yupToFormErrors } from 'formik'
+import { useFormik } from 'formik'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -28,7 +28,7 @@ const AddTransactionPage = ({ closeDrawer }) => {
                 navigate('/')
             }
         }
-    }, [])
+    }, [user, navigate])
 
 
     const handleSubmit = (values) => {
@@ -70,7 +70,7 @@ const AddTransactionPage = ({ closeDrawer }) => {
             .required('Please enter a description'),
         account_name: Yup.string()
             .required('Please enter an account name (e.g. Cash)')
-    
+
     })
 
     const formik = useFormik({
@@ -240,7 +240,7 @@ const AddTransactionPage = ({ closeDrawer }) => {
                         ></TextField>
                     </Grid>
                 </Grid>
-                
+
                 <Button type={'submit'} variant='contained' sx={{ mt: '10px' }}>Add</Button>
             </form>
             <AddCategoryDialog open={openAddCategory} setOpen={setOpenAddCategory} handleAdd={addCategory}></AddCategoryDialog>

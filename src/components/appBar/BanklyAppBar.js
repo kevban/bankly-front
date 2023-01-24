@@ -1,30 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 // import Chart from './Chart';
 import useToggle from '../../hooks/useToggle';
 import BanklyDrawer from './BanklyDrawer';
-import { useDispatch, useSelector } from 'react-redux';
-import AddTransactionButton from '../addTransactionPage/AddTransactionButton';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import AddTransactionDrawer from '../addTransactionPage/AddTransactionDrawer';
-import AddTransactionPage from '../addTransactionPage/AddTransactionPage';
 
 
 
@@ -55,7 +41,6 @@ const BanklyAppBar = () => {
 
 
 
-  const [appBarTitle, setAppBarTtitle] = React.useState('Bank.ly')
   const [open, toggleDrawer] = useToggle(false);
   const [transactionFab, setTransactionFab] = useState(false);
   useEffect(() => {
@@ -92,7 +77,7 @@ const BanklyAppBar = () => {
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          {appBarTitle}
+          Bank.ly
         </Typography>
       </Toolbar>
     </AppBar>

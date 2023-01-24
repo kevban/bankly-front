@@ -1,9 +1,5 @@
-import axios from 'axios'
 import BanklyApi from '../BanklyAPI';
-import jwtDecode from 'jwt-decode';
 import moment from 'moment';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
 
 function getTokenAction() {
     return async function (dispatch) {
@@ -90,7 +86,7 @@ function addCategory(category) {
     return async function (dispatch) {
         try {
             console.log('category', category)
-            const res = await BanklyApi.addCategory(category)
+            await BanklyApi.addCategory(category)
             dispatch({
                 type: 'ADD_CATEGORY',
                 data: { ...category }
@@ -108,7 +104,7 @@ function removeCategory(uuid) {
     return async function (dispatch) {
         try {
             const uuidObj = { uuid: uuid }
-            const res = await BanklyApi.removeCategory(uuidObj)
+            BanklyApi.removeCategory(uuidObj)
             dispatch({
                 type: 'REMOVE_CATEGORY',
                 data: uuid
@@ -133,7 +129,7 @@ function addTag(name) {
     return async function (dispatch) {
         try {
             const nameObj = { name: name }
-            const res = await BanklyApi.addTag(nameObj)
+            await BanklyApi.addTag(nameObj)
             dispatch({
                 type: 'ADD_TAG',
                 data: name
@@ -149,7 +145,7 @@ function removeTag(name) {
     return async function (dispatch) {
         try {
             const nameObj = { name: name }
-            const res = await BanklyApi.removeTag(nameObj)
+            await BanklyApi.removeTag(nameObj)
             dispatch({
                 type: 'REMOVE_TAG',
                 data: name
@@ -164,7 +160,7 @@ function removeTag(name) {
 function addTransction(transaction) {
     return async function (dispatch) {
         try {
-            const res = await BanklyApi.addTransaction(transaction)
+            await BanklyApi.addTransaction(transaction)
             dispatch({
                 type: 'ADD_TRANSACTION',
                 data: { ...transaction }
@@ -179,7 +175,7 @@ function addTransction(transaction) {
 function editTransction(transaction) {
     return async function (dispatch) {
         try {
-            let res = await BanklyApi.editTransaction(transaction)
+            await BanklyApi.editTransaction(transaction)
             dispatch({
                 type: 'EDIT_TRANSACTION',
                 data: { ...transaction }
@@ -195,7 +191,7 @@ function deleteTransaction(transaction_id) {
     return async function (dispatch) {
         try {
             const idObj = { transaction_id }
-            let res = await BanklyApi.deleteTransaction(idObj)
+            await BanklyApi.deleteTransaction(idObj)
             dispatch({
                 type: 'DELETE_TRANSACTION',
                 data: transaction_id
@@ -209,7 +205,7 @@ function deleteTransaction(transaction_id) {
 function addRule(rule) {
     return async function (dispatch) {
         try {
-            let res = await BanklyApi.addRule(rule)
+            await BanklyApi.addRule(rule)
             dispatch({
                 type: 'ADD_RULE',
                 data: { ...rule }
@@ -223,7 +219,7 @@ function addRule(rule) {
 function deleteRule(contains) {
     return async function (dispatch) {
         try {
-            let res = await BanklyApi.deleteRule({ contains })
+            await BanklyApi.deleteRule({ contains })
             dispatch({
                 type: 'DELETE_RULE',
                 data: contains
@@ -232,14 +228,6 @@ function deleteRule(contains) {
             console.log(e)
         }
     }
-}
-
-// retrieves the payload from jwt sent from server. Does not verify it.
-// Also saves the token to localStorage
-function decodeUserJWT(token) {
-    let payload = jwtDecode(token)
-    localStorage.setItem('token', token)
-    return payload
 }
 
 

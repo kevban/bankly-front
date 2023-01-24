@@ -19,6 +19,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import DiamondIcon from '@mui/icons-material/Diamond';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const getIcon = (category) => {
     switch (category.iconId) {
@@ -62,6 +63,8 @@ const getIcon = (category) => {
             return <SportsEsportsIcon></SportsEsportsIcon>
         case 19:
             return <DiamondIcon></DiamondIcon>
+        case 20:
+            return <CancelIcon></CancelIcon>
         case -1:
             return <EditIcon></EditIcon>
         default:

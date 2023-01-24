@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+// const BASE_URL = process.env.REACT_APP_BASE_URL || "https://bankly-backend-production.up.railway.app/api";
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001/api";
 
 class BanklyApi {
@@ -45,7 +46,7 @@ class BanklyApi {
 
     // this gets user transaction from database.
     static async getTransactions() {
-        let res = await this.request(`plaid/transactions`)
+        await this.request(`plaid/transactions`)
         let userTransactions = await this.request(`user/transactions`)
         return userTransactions
     }

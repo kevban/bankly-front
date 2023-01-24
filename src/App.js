@@ -1,7 +1,7 @@
 
 import './App.css';
-import { getTransaction, storeUser } from './actions/actionCreators'
-import { useDispatch, useSelector } from 'react-redux';
+import { storeUser, updateTransactions } from './actions/actionCreators'
+import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom'
 import SignUp from './components/Signup';
 import SignIn from './components/Login';
@@ -10,14 +10,13 @@ import Copyright from './components/Copyright';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import BanklyAppBar from './components/appBar/BanklyAppBar';
-import { Toolbar, Container, CssBaseline, Stack } from '@mui/material';
+import { Toolbar, Stack } from '@mui/material';
 import Landing from './components/landingPage/Landing';
 import Redirect from './Redirect';
 import PlaidPage from './components/plaidLink/PlaidPage';
 import useLocalStorage from './hooks/useLocalStorage';
 import { useEffect } from 'react';
 import BanklyApi from './BanklyAPI';
-import TransactionsList from './components/dashboard/TransactionsList';
 import TransactionPage from './components/dashboard/TransactionPage';
 import EditTransactionPage from './components/addTransactionPage/EditTransactionPage';
 import RulesPage from './components/addRulePage/RulesPage';
@@ -30,6 +29,7 @@ function App() {
   useEffect(() => {
     BanklyApi.token = token;
     dispatch(storeUser(token))
+    dispatch(updateTransactions())
   }, [token, dispatch])
   return (
     <div className="App">

@@ -1,4 +1,4 @@
-import { CircularProgress, Paper, Stack } from '@mui/material'
+import { CircularProgress, Stack } from '@mui/material'
 import { Container } from '@mui/system'
 import React from 'react'
 

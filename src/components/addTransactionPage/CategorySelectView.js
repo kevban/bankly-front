@@ -1,4 +1,4 @@
-import { Container, Grid, Pagination, Stack } from '@mui/material'
+import { Pagination, Stack } from '@mui/material'
 import React from 'react'
 import usePagination from '../../hooks/usePagination'
 import CategoryIcon from './CategoryIcon'
@@ -24,7 +24,7 @@ const CategorySelectView = ({ categories, selected, handleClick, maxPage = 6 }) 
                     </CategoryIcon>
                 })
             }
-            {page == pages ?
+            {page === pages ?
                 emptyCategories.map((val, idx) => {
                     return <CategoryIcon
                         key={uuid()}

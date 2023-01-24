@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Typography } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import CategorySelectView from '../CategorySelectView';
-import { MuiColorInput } from 'mui-color-input';
-import { Stack } from '@mui/system';
-import CategoryIcon from '../CategoryIcon';
 
 function RemoveCategoryDialog({ open, setOpen, handleRemove, categories }) {
 

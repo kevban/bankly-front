@@ -1,4 +1,4 @@
-import { Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack } from '@mui/material'
+import { Divider, IconButton, List, ListItem, ListItemText, Paper, Stack } from '@mui/material'
 import { Container } from '@mui/system'
 import React from 'react'
 import CategoryIcon from '../addTransactionPage/CategoryIcon'
@@ -30,7 +30,6 @@ const RulesList = ({ rules = [], handleDelete }) => {
                                 </ListItem>
                                 {idx === rules.length - 1 ? null : <Divider></Divider>}
                             </div>
-
                         )
                     })
                 }

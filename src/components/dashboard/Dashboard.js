@@ -1,11 +1,5 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Copyright from '../Copyright';
-import BanklyAppBar from '../appBar/BanklyAppBar';
-import { useDispatch, useSelector } from 'react-redux'
-import { getTransaction } from '../../actions/actionCreators'
+import React from 'react';
+import { useSelector } from 'react-redux'
 import DashboardContent from './DashboardContent';
 import moment from 'moment'
 import LoadingPage from '../LoadingPage';

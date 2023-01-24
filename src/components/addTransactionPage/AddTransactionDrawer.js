@@ -1,4 +1,4 @@
-import { Dialog, Drawer } from '@mui/material';
+import { Drawer } from '@mui/material';
 import React, { useState } from 'react'
 import AddTransactionButton from './AddTransactionButton';
 import AddTransactionPage from './AddTransactionPage';

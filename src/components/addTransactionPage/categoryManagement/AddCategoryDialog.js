@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Typography } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Typography } from '@mui/material';
 import CategorySelectView from '../CategorySelectView';
 import { MuiColorInput } from 'mui-color-input';
 import { Stack } from '@mui/system';
@@ -71,7 +71,8 @@ function AddCategoryDialog({ open, setOpen, handleAdd }) {
                         ></TextField>
                         <MuiColorInput value={color} onChange={handleColorChange}></MuiColorInput>
                         <Stack spacing={1} direction='row'>
-                            <Typography sx={{ my: 'auto' }} variant={'h6'}>Icon: </Typography><CategoryIcon handleClick={() => { }} category={selectedIcon}></CategoryIcon>
+                            <Typography variant={'h6'}>Icon: </Typography>
+                            <CategoryIcon handleClick={() => { }} category={selectedIcon}></CategoryIcon>
                         </Stack>
                         <CategorySelectView categories={categories} handleClick={setSelectedIcon}></CategorySelectView>
                     </Stack>

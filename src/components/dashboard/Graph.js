@@ -1,6 +1,5 @@
 import { Grid, IconButton } from '@mui/material'
-import { Stack } from '@mui/system'
-import React, { useCallback, useEffect, useInsertionEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import LoadingPage from '../LoadingPage'
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
@@ -20,7 +19,7 @@ import {
     PointElement,
     LineElement,
 } from 'chart.js';
-import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 
 ChartJS.register(
     ArcElement,
@@ -48,7 +47,7 @@ const Graph = () => {
         let colors = [];
         for (let i = 0; i < transactions.length; i++) {
             let date = moment(transactions[i].date, 'YYYY-MM-DD');
-            if (date.month() == month && transactions[i].amount > 0) {
+            if (date.month() === month && transactions[i].amount > 0 && transactions[i].bankly_category.name != 'Untracked') {
                 let category = transactions[i].bankly_category.name;
                 let color = transactions[i].bankly_category.color;
                 if (totals[category] == null) {
@@ -62,7 +61,7 @@ const Graph = () => {
             }
         }
         return [categories, amounts, colors];
-    })
+    }, [])
 
     const totalByDay = useCallback((transactions, month) => {
         let days = [];
@@ -75,7 +74,7 @@ const Graph = () => {
         }
         for (let i = 0; i < transactions.length; i++) {
             let date = moment(transactions[i].date, 'YYYY-MM-DD');
-            if (date.month() == month) {
+            if (date.month() === month && transactions[i].bankly_category.name != 'Untracked') {
                 let day = date.date();
                 let index = days.indexOf(day);
                 if (transactions[i].amount > 0) {
@@ -86,7 +85,7 @@ const Graph = () => {
             }
         }
         return [days, expenses, income];
-    })
+    }, [])
 
 
     useEffect(() => {
@@ -147,7 +146,7 @@ const Graph = () => {
                 setLineChart({ options: lineOptions, data: lineData })
             }
         }
-    }, [user])
+    }, [user, totalByCategory, totalByDay])
     if (!user || !lineChart.options) {
         return <LoadingPage></LoadingPage>
     }

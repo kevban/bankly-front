@@ -1,9 +1,9 @@
-import { Avatar, Button, Grid, Stack, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LoadingPage from "../LoadingPage";
 import Welcome from './Welcome'
 import WelcomeDisplay from "./WelcomeDisplay";
@@ -17,7 +17,7 @@ const Landing = () => {
                 navigate('/')
             }
         }
-    }, [user])
+    }, [user, navigate])
     if (!user) {
         return <LoadingPage />
     }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 // import Chart from './Chart';

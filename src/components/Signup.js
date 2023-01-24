@@ -11,18 +11,15 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
-import { register, removeUser, storeUser } from '../actions/actionCreators';
+import { removeUser, storeUser } from '../actions/actionCreators';
 import { useDispatch, useSelector } from 'react-redux';
-import Copyright from './Copyright';
 import { IconButton, Paper, Popover } from '@mui/material';
 import useAlert from '../hooks/useAlert';
 import BanklyApi from '../BanklyAPI';
 import LoadingPage from './LoadingPage';
 import * as Yup from 'yup'
-import { CheckBox } from '@mui/icons-material';
 import { Stack } from '@mui/system';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
@@ -77,7 +74,7 @@ function SignUp({ setToken }) {
         navigate('/')
       }
     }
-  }, [user])
+  }, [user, navigate])
 
 
 

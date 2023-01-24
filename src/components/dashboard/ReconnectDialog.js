@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import { usePlaidLink } from 'react-plaid-link';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,17 +15,17 @@ function ReconnectDialog() {
             dispatch(storeUser())
             dispatch(updateTransactions())
             dispatch(clearPlaidLink())
-        }
+        }, [dispatch]
     )
 
     const onExit = useCallback(
         () => {
             dispatch(clearPlaidLink())
-        }
+        }, [dispatch]
     )
 
 
-    const { open, ready } = usePlaidLink({
+    const { open } = usePlaidLink({
         token: updateLink ? updateLink.link_token : '',
         onSuccess,
         onExit

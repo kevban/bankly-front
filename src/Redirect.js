@@ -1,4 +1,3 @@
-import { Password } from '@mui/icons-material';
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
@@ -15,7 +14,7 @@ const Redirect = () => {
                 navigate('/dashboard')
             }
         }
-    }, [user])
+    }, [user, navigate])
     return <LoadingPage></LoadingPage>
 }
 

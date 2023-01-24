@@ -1,6 +1,5 @@
 import { Grid, IconButton } from '@mui/material'
-import { Stack } from '@mui/system'
-import React, { useEffect, useInsertionEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import LoadingPage from '../LoadingPage'
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
@@ -8,7 +7,6 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Title from './Title'
 import moment from 'moment'
 import { formatNum } from '../../helpers/formatNum'
-import { SettingsInputAntennaTwoTone } from '@mui/icons-material'
 
 
 const Summary = () => {
@@ -102,24 +100,26 @@ const Summary = () => {
             for (let transaction of user.transactions) {
                 let dateParts = transaction.date.split('-')
                 let amount = formatNum(transaction.amount)
-                if (dateParts[0] == curYear) {
-                    if (transaction.amount > 0) {
-                        stats[1].amount += amount
-                    } else {
-                        stats[4].amount -= amount
+                if (transaction.bankly_category.name != 'Untracked') {
+                    if (dateParts[0] == curYear) {
+                        if (transaction.amount > 0) {
+                            stats[1].amount += amount
+                        } else {
+                            stats[4].amount -= amount
+                        }
                     }
-                }
-                if (dateParts[1] == curMonth + 1) {
-                    if (transaction.amount > 0) {
-                        stats[0].amount += amount
-                    } else {
-                        stats[3].amount -= amount
+                    if (dateParts[1] == curMonth + 1) {
+                        if (transaction.amount > 0) {
+                            stats[0].amount += amount
+                        } else {
+                            stats[3].amount -= amount
+                        }
                     }
-                }
-                if (transaction.amount > 0) {
-                    stats[2].amount += amount
-                } else {
-                    stats[5].amount -= amount
+                    if (transaction.amount > 0) {
+                        stats[2].amount += amount
+                    } else {
+                        stats[5].amount -= amount
+                    }
                 }
             }
             setStats(stats)

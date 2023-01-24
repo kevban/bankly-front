@@ -20,14 +20,14 @@ function PlaidPage() {
     const generateToken = useCallback(
         () => {
             dispatch(getTokenAction())
-        }
+        }, [dispatch]
     )
     useEffect(() => {
         if (!user) {
             navigate('/')
         }
         generateToken();
-    }, [generateToken])
+    }, [generateToken, user, navigate])
     return (
         <Container component={Paper} maxWidth="xs" sx={{ my: 'auto' }}>
             {

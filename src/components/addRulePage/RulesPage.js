@@ -1,4 +1,4 @@
-import { Button, Grid, List, ListItem, Paper, Stack, TextField } from '@mui/material'
+import { Button, Paper, Stack, TextField } from '@mui/material'
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -40,7 +40,7 @@ const RulesPage = () => {
                 navigate('/')
             }
         }
-    }, [])
+    }, [user, navigate])
     if (!user) {
         return <LoadingPage></LoadingPage>
     }

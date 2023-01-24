@@ -1,4 +1,4 @@
-import { TextField, Paper, Select, Chip, MenuItem, InputLabel, FormControl, Grid, Pagination, InputAdornment, Button, Input, List, Stack, Dialog, ListItemIcon, IconButton, Typography } from '@mui/material'
+import { TextField, Paper, Select, Chip, MenuItem, InputLabel, Grid, InputAdornment, Button, Stack, IconButton } from '@mui/material'
 import { Container } from '@mui/system'
 import { useFormik } from 'formik'
 import moment from 'moment'
@@ -36,7 +36,7 @@ const EditTransactionPage = () => {
                 navigate('/')
             }
         }
-    }, [])
+    }, [user, navigate])
 
 
     const handleSubmit = (values) => {

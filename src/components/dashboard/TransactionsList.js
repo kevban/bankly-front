@@ -1,39 +1,30 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Link from '@mui/material/Link';
+import React, { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
-import BanklyApi from '../../BanklyAPI';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Chip, Drawer, Pagination, Stack } from '@mui/material';
+import { Button, Chip,  Pagination, Stack } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
 import moment from 'moment';
-import { clearPlaidLink, storeUser } from '../../actions/actionCreators';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { updateTransactions as updateTransactionsAction } from '../../actions/actionCreators';
 import usePagination from '../../hooks/usePagination';
-import getIcon from '../../helpers/icons'
 import CategoryIcon from '../addTransactionPage/CategoryIcon';
-import AddTransactionPage from '../addTransactionPage/AddTransactionPage';
-import { showEditTransactionDrawer } from '../../actions/actionCreators';
 import { v4 as uuid } from 'uuid'
 import { formatNum } from '../../helpers/formatNum';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import _ from 'lodash';
-import { usePlaidLink } from 'react-plaid-link';
-import ReconnectDialog from './ReconnectDialog';
 import { Box } from '@mui/system';
 
 
 
 function TransactionsList({ maxPageLength }) {
   const user = useSelector(store => store.auth.user)
-  const updateLink = useSelector(store => store.plaid.updateLink)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const midScreen = useMediaQuery(
