@@ -3,6 +3,9 @@ The React web front end for the personal finance budgeting app Bank.ly.
 
 [Click here to launch the site!](https://bankly.surge.sh/)
 
+#### [Bank.ly Mobile](https://github.com/kevban/bankly-mobile)  
+#### [Bank.ly bank-end](https://github.com/kevban/bankly-backend)  
+
 ## What does Bank.ly do?
 
 Bank.ly is a personal finance management tool that helps users keep track of their financial transactions and spending habits. By connecting to various financial institutions through the Plaid API, Bank.ly automatically pulls in bank transactions and allows users to easily add and edit them. Users can also create custom tags and categories to better organize their transactions and view detailed spending reports. Additionally, the app is designed to be cross-platform compatible, allowing users to access their financial information on the go.
@@ -38,4 +41,6 @@ The app will now be running on `http://localhost:3000`.
 
 ## Other
 - This project was made for Springboard Capstone project 2
-- Also see: [Bank.ly bank-end](https://github.com/kevban/bankly-backend), [Bankly Mobile](https://github.com/kevban/bankly-mobile)
+- Also see: 
+  - [Bank.ly bank-end](https://github.com/kevban/bankly-backend)
+  - [Bankly Mobile](https://github.com/kevban/bankly-mobile)
