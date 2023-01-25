@@ -5,18 +5,20 @@ import Paper from '@mui/material/Paper';
 import TransactionsList from './TransactionsList';
 import Summary from './Summary';
 import Graph from './Graph';
+import { useMediaQuery } from '@mui/material';
 
 
 
 function DashboardContent() {
-
+    const smScreen = useMediaQuery(
+        '(max-width:800px)'
+    )
     return (
-        <Grid container spacing={3} sx={{ p: '30px' }}>
-            {/* Chart */}
+        <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={9}>
                 <Paper
                     sx={{
-                        p: 2,
+                        py: 2,
                         display: 'flex',
                         flexDirection: 'column',
                         height: 280
@@ -25,7 +27,6 @@ function DashboardContent() {
                     <Graph></Graph>
                 </Paper>
             </Grid>
-            {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
                 <Paper
                     sx={{
@@ -38,9 +39,8 @@ function DashboardContent() {
                     <Summary></Summary>
                 </Paper>
             </Grid>
-            {/* Recent Orders */}
             <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Paper sx={{ p: smScreen? 0 : 2, display: 'flex', flexDirection: 'column' }}>
                     <TransactionsList maxPageLength={6} />
                 </Paper>
             </Grid>

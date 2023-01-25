@@ -11,6 +11,7 @@ import BanklyDrawer from './BanklyDrawer';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import AddTransactionDrawer from '../addTransactionPage/AddTransactionDrawer';
+import { useMediaQuery } from '@mui/material';
 
 
 
@@ -18,6 +19,7 @@ import AddTransactionDrawer from '../addTransactionPage/AddTransactionDrawer';
 
 const BanklyAppBar = () => {
   const user = useSelector(store => store.auth.user ? store.auth.user.token : null)
+  const smallScreen = useMediaQuery('(max-width:800px)')
   const location = useLocation()
   const pathname = location.pathname
   const drawerWidth = 240;
@@ -29,7 +31,7 @@ const BanklyAppBar = () => {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    ...((open && user) && {
+    ...((open && user && !smallScreen) && {
       marginLeft: drawerWidth,
       width: `calc(100% - ${drawerWidth}px)`,
       transition: theme.transitions.create(['width', 'margin'], {
@@ -64,7 +66,7 @@ const BanklyAppBar = () => {
           aria-label="open drawer"
           onClick={toggleDrawer}
           sx={{
-            marginRight: '36px',
+            position: 'absolute',
             ...(open && { display: 'none' }),
           }}
         >
@@ -74,8 +76,8 @@ const BanklyAppBar = () => {
           component="h1"
           variant="h6"
           color="inherit"
+          sx={{flexGrow: 1, textAlign: 'center'}}
           noWrap
-          sx={{ flexGrow: 1 }}
         >
           Bank.ly
         </Typography>
@@ -86,6 +88,7 @@ const BanklyAppBar = () => {
         open={open}
         toggleDrawer={toggleDrawer}
         drawerWidth={drawerWidth}
+        type={smallScreen? 'temporary': 'permanent'}
       ></BanklyDrawer>
     </> : null}
     {transactionFab ? <AddTransactionDrawer></AddTransactionDrawer> : null}

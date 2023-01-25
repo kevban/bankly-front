@@ -1,4 +1,4 @@
-import { TextField, Select, Chip, MenuItem, InputLabel, Grid, InputAdornment, Button, Stack, IconButton } from '@mui/material'
+import { TextField, Select, Chip, MenuItem, InputLabel, Grid, InputAdornment, Button, Stack, IconButton, useMediaQuery } from '@mui/material'
 import { Container } from '@mui/system'
 import { useFormik } from 'formik'
 import moment from 'moment'
@@ -20,6 +20,7 @@ import * as Yup from 'yup'
 
 const AddTransactionPage = ({ closeDrawer }) => {
     const user = useSelector(store => store.auth.user)
+    const smallScreen = useMediaQuery('(max-width:800px)')
     const navigate = useNavigate()
     const dispatch = useDispatch()
     useEffect(() => {
@@ -38,7 +39,7 @@ const AddTransactionPage = ({ closeDrawer }) => {
             ...values
         }
         dispatch(addTransactionAction(transactionObj))
-        closeDrawer({})
+        closeDrawer()
     }
 
     const addTag = (evt) => {
@@ -151,7 +152,11 @@ const AddTransactionPage = ({ closeDrawer }) => {
                         />
                     </Grid>
                     <Grid item xs={10} sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                        <CategorySelectView categories={user.user.categories} selected={formik.values.bankly_category} handleClick={handleCategorySelect}></CategorySelectView>
+                        <CategorySelectView 
+                        categories={user.user.categories} 
+                        selected={formik.values.bankly_category} 
+                        handleClick={handleCategorySelect} 
+                        maxPage={smallScreen? 4:6}></CategorySelectView>
                     </Grid>
                     <Grid item xs={2}>
                         <Stack spacing={1}>
@@ -240,8 +245,10 @@ const AddTransactionPage = ({ closeDrawer }) => {
                         ></TextField>
                     </Grid>
                 </Grid>
-
-                <Button type={'submit'} variant='contained' sx={{ mt: '10px' }}>Add</Button>
+                <Stack direction={'row'} justifyContent='space-between'>
+                    <Button variant='contained' sx={{ mt: '10px' }} color='secondary' onClick={closeDrawer}>Cancel</Button>
+                    <Button type={'submit'} variant='contained' sx={{ mt: '10px' }}>Add</Button>
+                </Stack>
             </form>
             <AddCategoryDialog open={openAddCategory} setOpen={setOpenAddCategory} handleAdd={addCategory}></AddCategoryDialog>
             <RemoveCategoryDialog open={openRemoveCategory} setOpen={setOpenRemoveCategory} handleRemove={removeCategory} categories={user.user.categories}></RemoveCategoryDialog>

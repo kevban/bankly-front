@@ -1,4 +1,4 @@
-import { Button, Paper, Stack, TextField } from '@mui/material'
+import { Button, Grid, Paper, Stack, TextField } from '@mui/material'
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -48,21 +48,25 @@ const RulesPage = () => {
         <>
             <Container component={Paper} sx={{ mt: 2, mb: 3 }}>
                 <h3>Add a new rule</h3>
-                <Stack direction="row" justifyContent={"space-around"}>
-                    <Stack spacing={2}>
-                        <p>If description contains</p>
-                        <TextField
-                            value={description}
-                            name={"description"}
-                            onChange={handleChange}
-                            variant={"standard"}
-                        ></TextField>
-                    </Stack>
-                    <Stack spacing={2}>
-                        <p>Category is</p>
-                        <CategorySelectView categories={user.user.categories} handleClick={handleCategoryClick} maxPage={3} selected={category}></CategorySelectView>
-                    </Stack>
-                </Stack>
+                <Grid container justifyContent={"space-around"}>
+                    <Grid item xs={12} md={6}>
+                        <Stack spacing={2}>
+                            <p>If description contains</p>
+                            <TextField
+                                value={description}
+                                name={"description"}
+                                onChange={handleChange}
+                                variant={"standard"}
+                            ></TextField>
+                        </Stack>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Stack spacing={2}>
+                            <p>Category is</p>
+                            <CategorySelectView categories={user.user.categories} handleClick={handleCategoryClick} maxPage={3} selected={category}></CategorySelectView>
+                        </Stack>
+                    </Grid>
+                </Grid>
                 <Button color={'success'} variant={'contained'} onClick={handleSubmit} sx={{ m: 2 }}>Add</Button>
             </Container>
             <RulesList rules={user.user.rules || []} handleDelete={handleDelete}></RulesList>

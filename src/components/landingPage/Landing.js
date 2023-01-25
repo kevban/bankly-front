@@ -21,12 +21,12 @@ const Landing = () => {
     if (!user) {
         return <LoadingPage />
     }
-    return <Container maxWidth='100%' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
+    return <Container maxWidth='100%' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', my: 'auto' }}>
         <Grid container sx={{ mv: '50%' }}>
-            <Grid item xs={7}>
+            <Grid item xs={12} md={7} sx={{my: 10}}>
                 <Welcome></Welcome>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={12} md={5} sx={{my: 10}}>
                 <WelcomeDisplay></WelcomeDisplay>
             </Grid>
         </Grid>

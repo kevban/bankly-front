@@ -6,11 +6,10 @@ import { Routes, Route } from 'react-router-dom'
 import SignUp from './components/Signup';
 import SignIn from './components/Login';
 import Dashboard from './components/dashboard/Dashboard';
-import Copyright from './components/Copyright';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import BanklyAppBar from './components/appBar/BanklyAppBar';
-import { Toolbar, Stack } from '@mui/material';
+import { Toolbar, Stack, useMediaQuery } from '@mui/material';
 import Landing from './components/landingPage/Landing';
 import Redirect from './Redirect';
 import PlaidPage from './components/plaidLink/PlaidPage';
@@ -24,6 +23,9 @@ import RulesPage from './components/addRulePage/RulesPage';
 
 function App() {
   const mdTheme = createTheme();
+  const smScreen = useMediaQuery(
+    '(max-width:800px)'
+  )
   const [token, setToken] = useLocalStorage('token');
   const dispatch = useDispatch()
   useEffect(() => {
@@ -49,7 +51,7 @@ function App() {
         >
           <BanklyAppBar>
           </BanklyAppBar>
-          <Stack sx={{ width: '80%', mx: 'auto' }}>
+          <Stack sx={{ width: smScreen? '90%' : "80%", mx: 'auto' }}>
             <Toolbar />
             <Routes>
               <Route exact path='/signup' element={<SignUp setToken={setToken}></SignUp>}></Route>
@@ -63,7 +65,6 @@ function App() {
               <Route exact path='/' element={<Redirect></Redirect>}></Route>
               <Route path='*' element={<h1>404 Not Found</h1>}></Route>
             </Routes>
-            <Copyright sx={{ mt: 5, mb: 5 }} />
           </Stack>
         </Box>
       </ThemeProvider>

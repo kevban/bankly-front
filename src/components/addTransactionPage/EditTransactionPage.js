@@ -1,4 +1,4 @@
-import { TextField, Paper, Select, Chip, MenuItem, InputLabel, Grid, InputAdornment, Button, Stack, IconButton } from '@mui/material'
+import { TextField, Paper, Select, Chip, MenuItem, InputLabel, Grid, InputAdornment, Button, Stack, IconButton, useMediaQuery } from '@mui/material'
 import { Container } from '@mui/system'
 import { useFormik } from 'formik'
 import moment from 'moment'
@@ -26,6 +26,7 @@ import * as Yup from 'yup'
 const EditTransactionPage = () => {
     const { id } = useParams()
     const user = useSelector(store => store.auth.user)
+    const smallScreen = useMediaQuery('(max-width:800px)')
     const transaction = useSelector(store => user ? store.auth.user.transactions.find(val => val.transaction_id === id) : {});
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -166,7 +167,12 @@ const EditTransactionPage = () => {
                         />
                     </Grid>
                     <Grid item xs={10} sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                        <CategorySelectView categories={user.user.categories} selected={formik.values.bankly_category} handleClick={handleCategorySelect}></CategorySelectView>
+                        <CategorySelectView 
+                        categories={user.user.categories} 
+                        selected={formik.values.bankly_category} 
+                        handleClick={handleCategorySelect}
+                        maxPage={smallScreen? 4:6}
+                        ></CategorySelectView>
                     </Grid>
                     <Grid item xs={2}>
                         <Stack spacing={1}>

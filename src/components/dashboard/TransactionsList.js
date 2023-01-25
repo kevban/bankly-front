@@ -6,7 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Chip,  Pagination, Stack } from '@mui/material';
+import { Button, Chip, Pagination, Stack } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
 import moment from 'moment';
@@ -28,16 +28,24 @@ function TransactionsList({ maxPageLength }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const midScreen = useMediaQuery(
-    '(max-width:1200px)'
+    '(max-width:1300px)'
   )
 
   const smScreen = useMediaQuery(
     '(max-width:800px)'
   )
+  const xsmScreen = useMediaQuery(
+    '(max-width:550px)'
+  )
   const updateTransactions = async () => {
     setButtonState(1)
     await dispatch(updateTransactionsAction())
     setButtonState(2)
+  }
+
+  const cellStyle = {
+    px: xsmScreen ? 0 : 3,
+    mx: xsmScreen ? 0 : 3
   }
 
   function compareDate(a, b) {
@@ -47,6 +55,16 @@ function TransactionsList({ maxPageLength }) {
       return 1
     } else {
       return 0
+    }
+  }
+
+  function getCellWidth() {
+    if (xsmScreen) {
+      return 50
+    } else if (smScreen) {
+      return 150
+    } else {
+      return 'auto'
     }
   }
 
@@ -82,23 +100,24 @@ function TransactionsList({ maxPageLength }) {
   return (
     <React.Fragment>
       <div style={{ position: 'relative' }}>
-        <Title>Recent Transactions</Title>
+        <Title>Transactions</Title>
         <div>
           {
             refreshButton(refreshButtonState)
           }
         </div>
 
-        <Table size="small">
+        <Table size='small'>
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Description</TableCell>
+              <TableCell sx={cellStyle} align='left'><Box maxWidth={50}></Box></TableCell>
+              <TableCell sx={cellStyle}><Box maxWidth={getCellWidth()}>Date</Box></TableCell>
+              <TableCell sx={cellStyle}><Box maxWidth={getCellWidth()}>Description</Box></TableCell>
               {midScreen ? null : <TableCell>Tag</TableCell>}
               {smScreen ? null : <TableCell><Box width={100}>Account</Box></TableCell>}
-
-              <TableCell align="right">Amount</TableCell>
+              <TableCell align="right" sx={{ ...cellStyle }}>
+                <Box sx={{ maxWidth:getCellWidth()}}>Amount</Box>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -111,31 +130,59 @@ function TransactionsList({ maxPageLength }) {
                   navigate(`/transactions/${row.transaction_id}`)
                 }}
                 hover>
-                <TableCell><CategoryIcon category={row.bankly_category} handleClick={() => { }}></CategoryIcon></TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>
-                  {row.name}
+                <TableCell sx={cellStyle} align='left'>
+                  <Box maxWidth={50}>
+                    <CategoryIcon 
+                    category={row.bankly_category} 
+                    handleClick={() => { }}
+                    showName={!xsmScreen}
+                    ></CategoryIcon>
+                  </Box>
                 </TableCell>
-                {midScreen ? null : <TableCell><Stack direction={'row'} spacing={1}>
-                  {row.category.map((category, idx) => (
-                    <Chip key={uuid()} label={category} variant="outlined" />
-                  ))}
-                </Stack></TableCell>}
-                {smScreen ? null : <TableCell
+                <TableCell sx={cellStyle}>
+                  <Box maxWidth={getCellWidth()}>{row.date}</Box>
+                </TableCell>
+                <TableCell
                   style={{
-                    width: 1,
+                    ...cellStyle,
                     whiteSpace: "normal",
-                    wordWrap: "break-word"
-                  }}><Box width={100}>{row.account_name}</Box></TableCell>}
+                    wordWrap: "break-word",
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden'
+                  }}
+                ><Box
+                  maxWidth={getCellWidth()}
+                  maxHeight={100}
+                >{row.name}</Box>
+                </TableCell>
+                {
+                  midScreen ? null : <TableCell
+                    sx={cellStyle}
+                  ><Stack direction={'row'} spacing={1}>
+                      {row.category.map((category, idx) => (
+                        <Chip key={uuid()} label={category} variant="outlined" />
+                      ))}
+                    </Stack></TableCell>
+                }
+                {
+                  smScreen ? null : <TableCell
+                    style={{
+                      ...cellStyle,
+                      whiteSpace: "normal",
+                      wordWrap: "break-word"
+                    }}><Box width={100}>{row.account_name}</Box></TableCell>
+                }
 
-                <TableCell align="right">{`${formatNum(row.amount, true)}`}</TableCell>
+                < TableCell align="right" sx={{ ...cellStyle }}>
+                  <Box sx={{ maxWidth: getCellWidth() }}>{`${formatNum(row.amount, true)}`}</Box>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </div>
+      </div >
       <Pagination count={Math.ceil(user.transactions.length / maxPageLength)} sx={{ mx: 'auto', mt: '10px' }} onChange={handlePagination}></Pagination>
-    </React.Fragment>
+    </React.Fragment >
   );
 }
 
