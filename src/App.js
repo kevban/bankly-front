@@ -4,9 +4,8 @@ import { storeUser, updateTransactions } from './actions/actionCreators'
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom'
 import SignUp from './components/Signup';
-import SignIn from './components/Login';
+import SignIn from './components/SignIn';
 import Dashboard from './components/dashboard/Dashboard';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import BanklyAppBar from './components/appBar/BanklyAppBar';
 import { Toolbar, Stack, useMediaQuery } from '@mui/material';
@@ -22,27 +21,27 @@ import RulesPage from './components/addRulePage/RulesPage';
 
 
 function App() {
-  const mdTheme = createTheme();
+  // used to determine the screen size for responsive display
   const smScreen = useMediaQuery(
     '(max-width:800px)'
   )
+  // getting jwt token from localStorage
   const [token, setToken] = useLocalStorage('token');
   const dispatch = useDispatch()
   useEffect(() => {
+    // storing jwt token to the bankly API file
     BanklyApi.token = token;
+    // storing user information to redux store
     dispatch(storeUser(token))
+    // fetching user transactions from back end
     dispatch(updateTransactions())
   }, [token, dispatch])
   return (
     <div className="App">
-      <ThemeProvider theme={mdTheme}>
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
+            backgroundColor: (theme) => theme.palette.grey[100],
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
@@ -67,7 +66,6 @@ function App() {
             </Routes>
           </Stack>
         </Box>
-      </ThemeProvider>
     </div>
   );
 }

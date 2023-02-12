@@ -39,7 +39,7 @@ const BanklyDrawer = ({ open, toggleDrawer, drawerWidth, type }) => {
     }),
   );
 
-  return (type == 'permanent' ? <PermanentDrawer
+  return (type === 'permanent' ? <PermanentDrawer
     variant={type}
     open={open}
   >

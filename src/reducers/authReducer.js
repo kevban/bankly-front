@@ -39,14 +39,15 @@ function authReducer(state = INITIAL_STATE, action) {
                 ...state,
                 user: {
                     ...state.user,
-                    user: { ...state.user.user, rules: [...state.user.user.rules, action.data] }
+                    user: { ...state.user.user, rules: [...state.user.user.rules, action.data] },
+                    transactions: state.user.transactions.map(transaction => {
+                        if (transaction.name.toLowerCase().includes(action.data.contains)) {
+                            return {...transaction, bankly_category: action.data.bankly_category};
+                        }
+                        return {...transaction};
+                    })
                 },
-                transactions: state.user.transactions.map(transaction => {
-                    if (transaction.name.toLowerCase().includes(action.data.contains)) {
-                        return {...transaction, bankly_category: action.data.bankly_category};
-                    }
-                    return {...transaction};
-                })
+                
             }
         case "DELETE_RULE":
             return { ...state, user: { ...state.user, user: { ...state.user.user, rules: state.user.user.rules.filter(val => val.contains !== action.data) } } }

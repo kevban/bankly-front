@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-// const BASE_URL = process.env.REACT_APP_BASE_URL || "https://bankly-backend-production.up.railway.app/api";
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001/api";
 
 class BanklyApi {
@@ -136,7 +135,6 @@ class BanklyApi {
 
 }
 
-// username papaya4, password password
 BanklyApi.token = ''
 
 export default BanklyApi

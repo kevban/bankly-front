@@ -47,7 +47,7 @@ const Graph = () => {
         let colors = [];
         for (let i = 0; i < transactions.length; i++) {
             let date = moment(transactions[i].date, 'YYYY-MM-DD');
-            if (date.month() === month && transactions[i].amount > 0 && transactions[i].bankly_category.name != 'Untracked') {
+            if (date.month() === month && transactions[i].amount > 0 && transactions[i].bankly_category.name !== 'Untracked') {
                 let category = transactions[i].bankly_category.name;
                 let color = transactions[i].bankly_category.color;
                 if (totals[category] == null) {
@@ -74,7 +74,7 @@ const Graph = () => {
         }
         for (let i = 0; i < transactions.length; i++) {
             let date = moment(transactions[i].date, 'YYYY-MM-DD');
-            if (date.month() === month && transactions[i].bankly_category.name != 'Untracked') {
+            if (date.month() === month && transactions[i].bankly_category.name !== 'Untracked') {
                 let day = date.date();
                 let index = days.indexOf(day);
                 if (transactions[i].amount > 0) {

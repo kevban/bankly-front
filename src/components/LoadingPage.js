@@ -9,7 +9,6 @@ const LoadingPage = () => {
                 <h1>Bank.ly</h1>
                 <CircularProgress />
             </Stack>
-
         </Container>
     )
 }

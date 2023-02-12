@@ -100,15 +100,15 @@ const Summary = () => {
             for (let transaction of user.transactions) {
                 let dateParts = transaction.date.split('-')
                 let amount = formatNum(transaction.amount)
-                if (transaction.bankly_category.name != 'Untracked') {
-                    if (dateParts[0] == curYear) {
+                if (transaction.bankly_category.name !== 'Untracked') {
+                    if (dateParts[0] === curYear) {
                         if (transaction.amount > 0) {
                             stats[1].amount += amount
                         } else {
                             stats[4].amount -= amount
                         }
                     }
-                    if (dateParts[1] == curMonth + 1) {
+                    if (dateParts[1] === curMonth + 1) {
                         if (transaction.amount > 0) {
                             stats[0].amount += amount
                         } else {
